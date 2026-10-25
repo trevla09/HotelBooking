@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace HotelBooking.Core.Domain;
 
 /// <summary>
@@ -9,6 +5,44 @@ namespace HotelBooking.Core.Domain;
 /// </summary>
 public class Reservation
 {
+    /// <summary>Ставка податку на додану вартість.</summary>
+    private const decimal VatRate = 0.2m;
+
+    /// <summary>Поріг суми для знижки постійному гостю, грн.</summary>
+    private const decimal RegularDiscountThreshold = 1000m;
+
+    /// <summary>Частка знижки постійному гостю.</summary>
+    private const decimal RegularDiscountRate = 0.10m;
+
+    /// <summary>Поріг суми для знижки на велике бронювання, грн.</summary>
+    private const decimal LargeBookingThreshold = 5000m;
+
+    /// <summary>Частка знижки на велике бронювання.</summary>
+    private const decimal LargeBookingDiscountRate = 0.15m;
+
+    /// <summary>Кількість рядків, з якої діє гуртова знижка.</summary>
+    private const int BulkLineCount = 10;
+
+    /// <summary>Сума гуртової знижки, грн.</summary>
+    private const decimal BulkDiscountAmount = 100m;
+
+    /// <summary>Межа кількості рядків у бронюванні (не включно).</summary>
+    private const int MaxLineCount = 100;
+
+    /// <summary>Найкоротше допустиме ім'я гостя.</summary>
+    private const int MinGuestNameLength = 3;
+
+    /// <summary>Стан: нове бронювання.</summary>
+    private const int StatusNew = 0;
+
+    /// <summary>Стан: бронювання підтверджене.</summary>
+    private const int StatusConfirmed = 1;
+
+    /// <summary>Стан: гість заселився.</summary>
+    private const int StatusCheckedIn = 2;
+
+    /// <summary>Стан: бронювання скасоване.</summary>
+    private const int StatusCancelled = 3;
     private readonly List<string[]> _lines = new List<string[]>();
 
     /// <summary>
@@ -30,12 +64,9 @@ public class Reservation
     public string GuestName { get; private set; }
 
     /// <summary>Стан бронювання.</summary>
-    public int Status { get; private set; } = 0;  // 0-нова,1-підтв,2-засел,3-скасов
-
+    public int Status { get; private set; } = StatusNew;
     /// <summary>Дата й час створення бронювання.</summary>
     public DateTime CreatedAt { get; private set; }
-
-    // public string prim;   
 
     /// <summary>
     /// Шукає бронювання за ідентифікатором.
@@ -88,32 +119,29 @@ public class Reservation
             lineCount = lineCount + 1;
         }
 
-        // if (sum1 > 500) { sum1 = sum1 - 50; } // стара знижка
         // знижки не сумуються: діє лише одна, пріоритет має знижка постійного гостя
-        if (isRegularGuest == true && total > 1000)
+        if (isRegularGuest && total > RegularDiscountThreshold)
         {
-            total = total * 0.9m;
+            total *= 1m - RegularDiscountRate;
         }
-        else if (total > 5000)
+        else if (total > LargeBookingThreshold)
         {
-            total = total * 0.85m;
-        }
-        else
-        {
-            total = total;
+            total *= 1m - LargeBookingDiscountRate;
         }
 
-        if (lineCount > 10)
+        if (lineCount > BulkLineCount)
         {
-            total = total - 100;
+            total -= BulkDiscountAmount;
         }
 
         if (total < 0)
         {
             total = 0;
         }
+
         // ПДВ нараховується на суму вже після всіх знижок
-        total = total + (total * 0.2m);
+        total += total * VatRate;
+
         return Math.Round(total, 2);
     }
 
@@ -126,21 +154,21 @@ public class Reservation
     /// </returns>
     public bool TryChangeStatus(int newStatus)
     {
-        if (Status == 0 && newStatus == 1)
+        if (Status == StatusNew && newStatus == StatusConfirmed)
         {
-            Status = 1;
+            Status = StatusConfirmed;
             return true;
         }
 
-        if (Status == 1 && newStatus == 2)
+        if (Status == StatusConfirmed && newStatus == StatusCheckedIn)
         {
-            Status = 2;
+            Status = StatusCheckedIn;
             return true;
         }
 
-        if (Status == 0 && newStatus == 3)
+        if (Status == StatusNew && newStatus == StatusCancelled)
         {
-            Status = 3;
+            Status = StatusCancelled;
             return true;
         }
 
@@ -154,13 +182,13 @@ public class Reservation
     public bool IsValid()
     {
         if (Id != null
-                   && Id != string.Empty
-                   && GuestName != null
-                   && GuestName.Length > 2
-                   && _lines.Count > 0
-                   && _lines.Count < 100
-                   && Status >= 0
-                   && Status <= 3)
+            && Id != string.Empty
+            && GuestName != null
+            && GuestName.Length >= MinGuestNameLength
+            && _lines.Count > 0
+            && _lines.Count < MaxLineCount
+            && Status >= StatusNew
+            && Status <= StatusCancelled)
         {
             return true;
         }
