@@ -3,12 +3,12 @@ using HotelBooking.Core.Domain;
 
 Console.OutputEncoding = Encoding.UTF8;
 
-var z = new bron("B-1001", "Іваненко");
-z.Add("101", 3, 250m);
-z.Add("204", 12, 90m);
+var reservation = new Reservation("B-1001", "Іваненко");
+reservation.AddLine("101", 3, 250m);
+reservation.AddLine("204", 12, 90m);
 
-Console.WriteLine(z.ProcessData(false));
-Console.WriteLine(z.ProcessData(true));
-Console.WriteLine(z.Ck());
-Console.WriteLine(z.Chg(1));
-Console.Write(z.Rep());
+Console.WriteLine(reservation.CalculateTotal(false));
+Console.WriteLine(reservation.CalculateTotal(true));
+Console.WriteLine(reservation.IsValid());
+Console.WriteLine(reservation.TryChangeStatus(1));
+Console.Write(reservation.BuildReport());
