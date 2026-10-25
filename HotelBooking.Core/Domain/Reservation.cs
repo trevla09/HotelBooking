@@ -4,30 +4,45 @@ using System.Linq;
 
 namespace HotelBooking.Core.Domain;
 
-// клас
+/// <summary>
+/// Бронювання гостя з переліком номерів і кількістю діб.
+/// </summary>
 public class Reservation
 {
     private readonly List<string[]> _lines = new List<string[]>();
 
-    // конструктор
+    /// <summary>
+    /// Створює нове бронювання для гостя.
+    /// </summary>
+    /// <param name="id">Ідентифікатор бронювання.</param>
+    /// <param name="guestName">Ім'я гостя.</param>
     public Reservation(string id, string guestName)
     {
-        Id = id;              // ставимо id
-        GuestName = guestName;         // ставимо cl
-        CreatedAt = DateTime.Now;   // ставимо дату
+        Id = id;
+        GuestName = guestName;
+        CreatedAt = DateTime.Now;
     }
 
+    /// <summary>Ідентифікатор бронювання.</summary>
     public string Id { get; private set; }
 
+    /// <summary>Ім'я гостя, на якого оформлено бронювання.</summary>
     public string GuestName { get; private set; }
 
+    /// <summary>Стан бронювання.</summary>
     public int Status { get; private set; } = 0;  // 0-нова,1-підтв,2-засел,3-скасов
 
+    /// <summary>Дата й час створення бронювання.</summary>
     public DateTime CreatedAt { get; private set; }
 
-    // public string prim;   // примітка, поки не треба
+    // public string prim;   
 
-    // пошук
+    /// <summary>
+    /// Шукає бронювання за ідентифікатором.
+    /// </summary>
+    /// <param name="reservations">Список бронювань для пошуку.</param>
+    /// <param name="reservationId">Ідентифікатор шуканого бронювання.</param>
+    /// <returns>Знайдене бронювання або null, якщо його немає.</returns>
     public static Reservation FindById(List<Reservation> reservations, string reservationId)
     {
         for (int i = 0; i < reservations.Count; i++)
@@ -41,17 +56,26 @@ public class Reservation
         return null;
     }
 
-    // метод додавання
+    /// <summary>
+    /// Додає до бронювання рядок: номер, кількість діб і тариф за добу.
+    /// </summary>
+    /// <param name="roomNumber">Номер кімнати.</param>
+    /// <param name="nights">Кількість діб проживання.</param>
+    /// <param name="nightlyRate">Ціна за одну добу, грн.</param>
     public void AddLine(string roomNumber, int nights, decimal nightlyRate)
     {
         string[] line = new string[3];
         line[0] = roomNumber;
         line[1] = nights.ToString();
         line[2] = nightlyRate.ToString();
-        _lines.Add(line);   // додаємо t у ln
+        _lines.Add(line);
     }
 
-    // ProcessData
+    /// <summary>
+    /// Обчислює вартість бронювання з урахуванням знижок і ПДВ.
+    /// </summary>
+    /// <param name="isRegularGuest">Ознака постійного гостя.</param>
+    /// <returns>Сума до сплати, заокруглена до двох знаків.</returns>
     public decimal CalculateTotal(bool isRegularGuest)
     {
         decimal total = 0;
@@ -60,11 +84,12 @@ public class Reservation
         {
             int nights = int.Parse(_lines[i][1]);
             decimal nightlyRate = decimal.Parse(_lines[i][2]);
-            total = total + (nights * nightlyRate);   // додаємо до суми
-            lineCount = lineCount + 1;     // збільшуємо kolvo на одиницю
+            total = total + (nights * nightlyRate);
+            lineCount = lineCount + 1;
         }
 
         // if (sum1 > 500) { sum1 = sum1 - 50; } // стара знижка
+        // знижки не сумуються: діє лише одна, пріоритет має знижка постійного гостя
         if (isRegularGuest == true && total > 1000)
         {
             total = total * 0.9m;
@@ -87,12 +112,18 @@ public class Reservation
         {
             total = 0;
         }
-
+        // ПДВ нараховується на суму вже після всіх знижок
         total = total + (total * 0.2m);
-        return Math.Round(total, 2);   // повертаємо sum1
+        return Math.Round(total, 2);
     }
 
-    // міняємо статус
+    /// <summary>
+    /// Змінює стан бронювання, якщо перехід дозволений правилами готелю.
+    /// </summary>
+    /// <param name="newStatus">Цільовий стан бронювання.</param>
+    /// <returns>
+    /// true, якщо перехід виконано; false, якщо він заборонений.
+    /// </returns>
     public bool TryChangeStatus(int newStatus)
     {
         if (Status == 0 && newStatus == 1)
@@ -113,10 +144,13 @@ public class Reservation
             return true;
         }
 
-        return false;   // не можна
+        return false;
     }
 
-    // перевірка
+    /// <summary>
+    /// Перевіряє, чи коректно заповнене бронювання.
+    /// </summary>
+    /// <returns>true, якщо всі значення в допустимих межах; інакше false.</returns>
     public bool IsValid()
     {
         if (Id != null
@@ -136,7 +170,10 @@ public class Reservation
         }
     }
 
-    // звіт
+    /// <summary>
+    /// Формує текстовий звіт за рядками бронювання з підсумковою сумою.
+    /// </summary>
+    /// <returns>Багаторядковий текст звіту.</returns>
     public string BuildReport()
     {
         string report = string.Empty;
@@ -151,6 +188,6 @@ public class Reservation
         }
 
         report = report + "Разом: " + CalculateTotal(false) + "\n";
-        return report;   // повертаємо s
+        return report;
     }
 }
