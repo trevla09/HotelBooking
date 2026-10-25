@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Text;
 using HotelBooking.Core.Domain;
 
@@ -14,11 +14,15 @@ Booking booking = new()
 
 booking.AddNight(new BookingNight
 {
-    RoomNumber = "204", Date = new DateOnly(2026, 11, 13), Rate = 1450.00m,
+    RoomNumber = "204",
+    Date = new DateOnly(2026, 11, 13),
+    Rate = 1450.00m,
 });
 booking.AddNight(new BookingNight
 {
-    RoomNumber = "204", Date = new DateOnly(2026, 11, 14), Rate = 1650.00m,
+    RoomNumber = "204",
+    Date = new DateOnly(2026, 11, 14),
+    Rate = 1650.00m,
 });
 
 string total = booking.Total()
