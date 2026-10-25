@@ -1,6 +1,6 @@
 namespace HotelBooking.Core.Domain;
 
-
+/// <summary>Гість готелю.</summary>
 public sealed class Guest
 {
     public int Id { get; init; }

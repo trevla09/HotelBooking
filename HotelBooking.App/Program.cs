@@ -2,7 +2,6 @@ using System.Globalization;
 using System.Text;
 using HotelBooking.Core.Domain;
 
-
 Console.OutputEncoding = Encoding.UTF8;
 
 Booking booking = new()
