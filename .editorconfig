@@ -27,6 +27,14 @@ csharp_style_var_for_built_in_types = false:suggestion
 
 
 dotnet_naming_rule.priv_underscore.symbols = priv_field
+# іменування: константи — PascalCase без підкреслення (перевіряється раніше за правило полів)
+dotnet_naming_rule.const_pascal.symbols = const_field
+dotnet_naming_rule.const_pascal.style = pascal_case_style
+dotnet_naming_rule.const_pascal.severity = warning
+dotnet_naming_symbols.const_field.applicable_kinds = field
+dotnet_naming_symbols.const_field.applicable_accessibilities = *
+dotnet_naming_symbols.const_field.required_modifiers = const
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 dotnet_naming_rule.priv_underscore.style = underscore_camel
 dotnet_naming_rule.priv_underscore.severity = warning
 dotnet_naming_symbols.priv_field.applicable_kinds = field
@@ -43,11 +51,16 @@ dotnet_diagnostic.SA1101.severity = none
 dotnet_diagnostic.SA1200.severity = none
 # приватні поля іменуємо з _, як прийнято в .NET
 dotnet_diagnostic.SA1309.severity = none
-# XML-документацію вимагатимемо з ЛР № 4, поки що ні
+# документація українською, а правила вимагають англійських шаблонів
+# "Gets ..." для властивостей і "Initializes a new instance ..." для конструкторів
+dotnet_diagnostic.SA1623.severity = none
+dotnet_diagnostic.SA1642.severity = none
+# у консольному застосунку XML-документацію не генеруємо, тому SA0001 вимкнено
 dotnet_diagnostic.SA0001.severity = none
-dotnet_diagnostic.SA1600.severity = none
-dotnet_diagnostic.SA1601.severity = none
-dotnet_diagnostic.SA1602.severity = none
+# з ЛР № 2 документація обов'язкова (GenerateDocumentationFile у Core)
+dotnet_diagnostic.SA1600.severity = warning
+dotnet_diagnostic.SA1601.severity = warning
+dotnet_diagnostic.SA1602.severity = warning
 # кома в кінці багаторядкового ініціалізатора необов'язкова
 dotnet_diagnostic.SA1413.severity = none
 

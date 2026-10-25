@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace HotelBooking.Core.Domain;
 
 /// <summary>
@@ -65,6 +67,7 @@ public class Reservation
 
     /// <summary>Стан бронювання.</summary>
     public int Status { get; private set; } = StatusNew;
+
     /// <summary>Дата й час створення бронювання.</summary>
     public DateTime CreatedAt { get; private set; }
 
@@ -74,7 +77,7 @@ public class Reservation
     /// <param name="reservations">Список бронювань для пошуку.</param>
     /// <param name="reservationId">Ідентифікатор шуканого бронювання.</param>
     /// <returns>Знайдене бронювання або null, якщо його немає.</returns>
-    public static Reservation FindById(List<Reservation> reservations, string reservationId)
+    public static Reservation? FindById(List<Reservation> reservations, string reservationId)
     {
         for (int i = 0; i < reservations.Count; i++)
         {
@@ -97,8 +100,8 @@ public class Reservation
     {
         string[] line = new string[3];
         line[0] = roomNumber;
-        line[1] = nights.ToString();
-        line[2] = nightlyRate.ToString();
+        line[1] = nights.ToString(CultureInfo.CurrentCulture);
+        line[2] = nightlyRate.ToString(CultureInfo.CurrentCulture);
         _lines.Add(line);
     }
 
@@ -113,8 +116,8 @@ public class Reservation
         int lineCount = 0;
         for (int i = 0; i < _lines.Count; i++)
         {
-            int nights = int.Parse(_lines[i][1]);
-            decimal nightlyRate = decimal.Parse(_lines[i][2]);
+            int nights = int.Parse(_lines[i][1], CultureInfo.CurrentCulture);
+            decimal nightlyRate = decimal.Parse(_lines[i][2], CultureInfo.CurrentCulture);
             total = total + (nights * nightlyRate);
             lineCount = lineCount + 1;
         }
@@ -211,8 +214,9 @@ public class Reservation
                             + "Номер: " + _lines[i][0]
                             + "; діб: " + _lines[i][1]
                             + "; ціна: " + _lines[i][2]
-                            + "; сума: " + (int.Parse(_lines[i][1]) * decimal.Parse(_lines[i][2]))
-                            + "\n";
+                            + "; сума: "
+                             + (int.Parse(_lines[i][1], CultureInfo.CurrentCulture)
+                              * decimal.Parse(_lines[i][2], CultureInfo.CurrentCulture)) + "\n";
         }
 
         report = report + "Разом: " + CalculateTotal(false) + "\n";
