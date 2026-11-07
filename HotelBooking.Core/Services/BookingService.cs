@@ -3,6 +3,7 @@ using System.Globalization;
 using HotelBooking.Core.Abstractions;
 using HotelBooking.Core.Domain;
 using HotelBooking.Core.Errors;
+using Microsoft.Extensions.Logging;
 
 namespace HotelBooking.Core.Services;
 
@@ -12,20 +13,24 @@ public sealed class BookingService
     private readonly IBookingRepository _repository;
     private readonly IPricingPolicy _pricing;
     private readonly INotifier _notifier;
+    private readonly ILogger<BookingService> _log;
 
     /// <summary>Створює сервіс.</summary>
     /// <param name="repository">Сховище бронювань.</param>
     /// <param name="pricing">Політика розрахунку ціни.</param>
     /// <param name="notifier">Сповіщувач.</param>
+    /// <param name="log">Журнал сервісу.</param>
     /// <exception cref="ArgumentNullException">Залежність не задано.</exception>
     public BookingService(
         IBookingRepository repository,
         IPricingPolicy pricing,
-        INotifier notifier)
+        INotifier notifier,
+        ILogger<BookingService> log)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _pricing = pricing ?? throw new ArgumentNullException(nameof(pricing));
         _notifier = notifier ?? throw new ArgumentNullException(nameof(notifier));
+        _log = log ?? throw new ArgumentNullException(nameof(log));
     }
 
     /// <summary>Розміщує бронювання у сховищі й надсилає сповіщення.</summary>
@@ -51,6 +56,7 @@ public sealed class BookingService
     public void AddNight(int bookingId, BookingNight night)
     {
         ArgumentNullException.ThrowIfNull(night);
+        using IDisposable? scope = _log.BeginScope("Booking:{BookingId}", bookingId);
         Booking booking = Load(bookingId);
         if (booking.Status != BookingStatus.New)
         {
@@ -65,11 +71,14 @@ public sealed class BookingService
         }
         catch (InvalidOperationException ex)
         {
+            _log.LogWarning("Повторна ніч {Date} у номері {Room}", night.Date, night.RoomNumber);
             throw new DomainRuleException(
                 "booking.night-unique",
                 $"Ніч {night.Date:dd.MM.yyyy} у номері {night.RoomNumber} уже заброньована",
                 ex);
         }
+
+        _log.LogInformation("Додано ніч {Date} у номері {Room}", night.Date, night.RoomNumber);
     }
 
     /// <summary>Завантажує бронювання за номером.</summary>
@@ -89,6 +98,7 @@ public sealed class BookingService
     public void Cancel(int bookingId, string reason)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(reason);
+        using IDisposable? scope = _log.BeginScope("Booking:{BookingId}", bookingId);
         Booking booking = Load(bookingId);
         try
         {
@@ -96,12 +106,14 @@ public sealed class BookingService
         }
         catch (InvalidOperationException ex)
         {
+            _log.LogError(ex, "Скасування не виконано, стан {Status}", booking.Status);
             throw new DomainRuleException(
                 "booking.cancellable",
                 $"Бронювання № {bookingId} у стані {booking.Status} скасувати не можна",
                 ex);
         }
 
+        _log.LogInformation("Скасовано, причина {Reason}", reason);
         _notifier.Notify($"Бронювання № {bookingId} скасовано: {reason}");
     }
 
@@ -112,6 +124,8 @@ public sealed class BookingService
     /// Бронювання немає, воно не нове або сума менша за вартість.</exception>
     public void Pay(int bookingId, decimal amount)
     {
+        using IDisposable? scope = _log.BeginScope("Booking:{BookingId}", bookingId);
+        _log.LogDebug("Початок оплати, сума {Amount}", amount);
         Booking booking = Load(bookingId);
         if (booking.Status != BookingStatus.New)
         {
@@ -126,7 +140,13 @@ public sealed class BookingService
                 "booking.amount", $"Сплачено {amount:0.00} грн, треба {total:0.00} грн");
         }
 
+        if (amount > total)
+        {
+            _log.LogWarning("Переплата {Extra} грн", amount - total);
+        }
+
         booking.Confirm();
+        _log.LogInformation("Оплачено на {Amount} грн", amount);
     }
 
     /// <summary>Обчислює вартість бронювання за політикою. Не змінює стан.</summary>

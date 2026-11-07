@@ -103,6 +103,12 @@ dotnet_diagnostic.CA1062.severity = error
 # S-13 межа цикломатичної складності (поріг у CodeMetricsConfig.txt)
 dotnet_diagnostic.CA1502.severity = error
 
+# ЛР5: CA1848 радить делегати LoggerMessage замість LogInformation(...) заради
+# швидкодії. Для навчального консольного застосунку це не критично, а методичка
+# ЛР5 вимагає саме виклики з іменованими заповнювачами. Шаблони лишаються
+# структурованими, тож рекомендацію вимкнено свідомо.
+dotnet_diagnostic.CA1848.severity = none
+
 #### Типи і колекції (D) ####
 
 # D-11 у публічному API не List<T>

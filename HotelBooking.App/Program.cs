@@ -10,8 +10,20 @@ using HotelBooking.Core.Pricing;
 using HotelBooking.Core.Reporting;
 using HotelBooking.Core.Services;
 using HotelBooking.Core.Storage;
+using Microsoft.Extensions.Logging;
 
 Console.OutputEncoding = Encoding.UTF8;
+
+using ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+{
+    builder.AddSimpleConsole(options =>
+    {
+        options.TimestampFormat = "HH:mm:ss ";
+        options.IncludeScopes = true;
+    });
+    builder.SetMinimumLevel(LogLevel.Debug);
+});
+ILogger log = loggerFactory.CreateLogger("HotelBooking.App");
 
 // Верхній обробник: єдине місце, де дозволено catch (Exception).
 try
@@ -45,7 +57,11 @@ try
         : new StandardPricingPolicy();
 
     var repository = new InMemoryBookingRepository();
-    var service = new BookingService(repository, pricing, new ConsoleNotifier());
+    var service = new BookingService(
+        repository,
+        pricing,
+        new ConsoleNotifier(),
+        loggerFactory.CreateLogger<BookingService>());
 
     var booking = new Booking(1, 100, DateTimeOffset.Now);
     booking.AddNight(new BookingNight("101", new DateOnly(2026, 11, 10), 250m));
@@ -97,18 +113,27 @@ try
 
     int validCount = BookingNightParser.CountValidNights(["3", "два", "0", "2"]);
     Console.WriteLine($"Коректних кількостей ночей: {validCount}");
+    service.Pay(1, 500m);
     service.Cancel(1, "гість змінив плани");
+    try
+    {
+        service.Cancel(1, "повторне скасування");
+    }
+    catch (DomainRuleException ex)
+    {
+        log.LogWarning("Правило {Rule}: {Message}", ex.Rule, ex.Message);
+    }
 
     return 0;
 }
 catch (DomainRuleException ex)
 {
-    Console.Error.WriteLine($"Порушено правило {ex.Rule}: {ex.Message}");
+    log.LogWarning("Правило {Rule}: {Message}", ex.Rule, ex.Message);
     return 1;
 }
 catch (Exception ex)
 {
-    Console.Error.WriteLine($"Непередбачений збій: {ex}");
+    log.LogCritical(ex, "Непередбачений збій");
     return 2;
 }
 

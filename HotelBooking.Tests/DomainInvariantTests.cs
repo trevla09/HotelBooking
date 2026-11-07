@@ -3,6 +3,7 @@ using HotelBooking.Core.Domain;
 using HotelBooking.Core.Pricing;
 using HotelBooking.Core.Services;
 using HotelBooking.Core.Storage;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace HotelBooking.Tests;
@@ -33,7 +34,8 @@ public class DomainInvariantTests
         BookingService service = new(
             new InMemoryBookingRepository(),
             new DiscountPricingPolicy(0.10m),
-            new SilentNotifier());
+            new SilentNotifier(),
+            NullLogger<BookingService>.Instance);
         Booking booking = NewBooking(2);
         booking.AddNight(new BookingNight("101", new DateOnly(2026, 11, 10), 250m));
         booking.AddNight(new BookingNight("101", new DateOnly(2026, 11, 11), 250m));
