@@ -5,7 +5,7 @@ using HotelBooking.Core.Domain;
 namespace HotelBooking.Core.Services;
 
 /// <summary>Прикладний сервіс бронювань. Залежності приходять у конструкторі.</summary>
-public sealed class BookingService
+public sealed partial class BookingService
 {
     private readonly IBookingRepository _repository;
     private readonly IPricingPolicy _pricing;
