@@ -77,8 +77,12 @@ public class Reservation
     /// <param name="reservations">Список бронювань для пошуку.</param>
     /// <param name="reservationId">Ідентифікатор шуканого бронювання.</param>
     /// <returns>Знайдене бронювання або null, якщо його немає.</returns>
-    public static Reservation? FindById(List<Reservation> reservations, string reservationId)
+    public static Reservation? FindById(
+        IReadOnlyList<Reservation> reservations,
+        string reservationId)
     {
+        ArgumentNullException.ThrowIfNull(reservations);
+
         for (int i = 0; i < reservations.Count; i++)
         {
             if (reservations[i].Id == reservationId)
