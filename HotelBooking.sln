@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Core", "HotelB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.App", "HotelBooking.App\HotelBooking.App.csproj", "{F5701AFE-396A-4DC4-881D-1CD3791DBE82}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Tests", "HotelBooking.Tests\HotelBooking.Tests.csproj", "{A0FE0D56-D312-4CF5-9743-D9C4DAC26B77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{F5701AFE-396A-4DC4-881D-1CD3791DBE82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5701AFE-396A-4DC4-881D-1CD3791DBE82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5701AFE-396A-4DC4-881D-1CD3791DBE82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0FE0D56-D312-4CF5-9743-D9C4DAC26B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0FE0D56-D312-4CF5-9743-D9C4DAC26B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0FE0D56-D312-4CF5-9743-D9C4DAC26B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0FE0D56-D312-4CF5-9743-D9C4DAC26B77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,7 @@
+# Тестовий проєкт: винятки зі стандарту кодування (розділ 1.1 CODING_STANDARD.md).
+# XML-документація для тестів не потрібна, а імена тестів пишуться
+# як Метод_Сценарій_Результат, тобто з підкресленнями.
+[*.cs]
+dotnet_diagnostic.CS1591.severity = none
+dotnet_diagnostic.SA1600.severity = none
+dotnet_diagnostic.CA1707.severity = none
