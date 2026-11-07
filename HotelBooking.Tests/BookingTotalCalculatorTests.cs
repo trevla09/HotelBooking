@@ -50,4 +50,34 @@ public class BookingTotalCalculatorTests
         Assert.Equal(420m, result.Total);
         Assert.Equal(BookingStatus.CheckedIn, result.Status);
     }
+
+    [Fact]
+    public void Calculate_CancelledBooking_ReturnsZero()
+    {
+        List<BookingLine> lines = new()
+        {
+            new() { RoomNumber = "305", Nights = 3, NightlyRate = 500m },
+        };
+        TotalRequest request = new(
+            BookingId: 4,
+            Guest: new GuestInfo("Мельник", "m@ex.com", false),
+            Lines: lines,
+            CreatedAt: new DateOnly(2026, 3, 10),
+            CouponCode: null,
+            Status: BookingStatus.Cancelled,
+            TransferPrice: 60m);
+
+        TotalResult result = BookingTotalCalculator.Calculate(request);
+
+        Assert.Equal(0m, result.Total);
+        Assert.Equal(BookingStatus.Cancelled, result.Status);
+    }
+
+    [Fact]
+    public void CouponDiscountOf_FixedCouponBelowThreshold_ReturnsZero()
+    {
+        decimal discount = BookingTotalCalculator.CouponDiscountOf(800m, "MINUS200");
+
+        Assert.Equal(0m, discount);
+    }
 }

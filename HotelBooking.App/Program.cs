@@ -1,6 +1,7 @@
 using System.Text;
 using HotelBooking.Core.Bookings;
 using HotelBooking.Core.Domain;
+using HotelBooking.Core.Reporting;
 
 Console.OutputEncoding = Encoding.UTF8;
 
@@ -16,7 +17,8 @@ Console.Write(reservation.BuildReport());
 
 TotalRequest request = BuildSampleRequest();
 TotalResult result = BookingTotalCalculator.Calculate(request);
-Console.WriteLine(result.Total);
+string report = BookingReport.TextOf(request, result);
+new BookingReportPrinter(Console.Out).Print(report);
 
 static TotalRequest BuildSampleRequest()
 {
