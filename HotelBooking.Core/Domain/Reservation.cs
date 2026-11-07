@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace HotelBooking.Core.Domain;
 
@@ -45,7 +45,7 @@ public class Reservation
 
     /// <summary>Стан: бронювання скасоване.</summary>
     private const int StatusCancelled = 3;
-    private readonly List<string[]> _lines = new List<string[]>();
+    private readonly List<ReservationLine> _lines = new List<ReservationLine>();
 
     /// <summary>
     /// Створює нове бронювання для гостя.
@@ -102,11 +102,7 @@ public class Reservation
     /// <param name="nightlyRate">Ціна за одну добу, грн.</param>
     public void AddLine(string roomNumber, int nights, decimal nightlyRate)
     {
-        string[] line = new string[3];
-        line[0] = roomNumber;
-        line[1] = nights.ToString(CultureInfo.CurrentCulture);
-        line[2] = nightlyRate.ToString(CultureInfo.CurrentCulture);
-        _lines.Add(line);
+        _lines.Add(new ReservationLine(roomNumber, nights, nightlyRate));
     }
 
     /// <summary>
@@ -120,9 +116,7 @@ public class Reservation
         int lineCount = 0;
         for (int i = 0; i < _lines.Count; i++)
         {
-            int nights = int.Parse(_lines[i][1], CultureInfo.CurrentCulture);
-            decimal nightlyRate = decimal.Parse(_lines[i][2], CultureInfo.CurrentCulture);
-            total = total + (nights * nightlyRate);
+            total = total + (_lines[i].Nights * _lines[i].NightlyRate);
             lineCount = lineCount + 1;
         }
 
@@ -215,15 +209,17 @@ public class Reservation
         for (int i = 0; i < _lines.Count; i++)
         {
             report = report
-                            + "Номер: " + _lines[i][0]
-                            + "; діб: " + _lines[i][1]
-                            + "; ціна: " + _lines[i][2]
+                            + "Номер: " + _lines[i].RoomNumber
+                            + "; діб: " + _lines[i].Nights.ToString(CultureInfo.CurrentCulture)
+                            + "; ціна: " + _lines[i].NightlyRate.ToString(CultureInfo.CurrentCulture)
                             + "; сума: "
-                             + (int.Parse(_lines[i][1], CultureInfo.CurrentCulture)
-                              * decimal.Parse(_lines[i][2], CultureInfo.CurrentCulture)) + "\n";
+                             + (_lines[i].Nights * _lines[i].NightlyRate) + "\n";
         }
 
         report = report + "Разом: " + CalculateTotal(false) + "\n";
         return report;
     }
+
+    /// <summary>Рядок бронювання з типізованими полями (замість масиву рядків).</summary>
+    private sealed record ReservationLine(string RoomNumber, int Nights, decimal NightlyRate);
 }

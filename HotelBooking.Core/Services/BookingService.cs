@@ -1,6 +1,7 @@
 using System.Globalization;
 using HotelBooking.Core.Abstractions;
 using HotelBooking.Core.Domain;
+using HotelBooking.Core.Errors;
 
 namespace HotelBooking.Core.Services;
 
@@ -38,6 +39,38 @@ public sealed partial class BookingService
             "Бронювання № {0} прийнято, сума {1:0.00} грн",
             booking.Id,
             TotalOf(booking)));
+    }
+
+    /// <summary>Додає перевірену ніч до нового бронювання.</summary>
+    /// <param name="bookingId">Номер бронювання.</param>
+    /// <param name="night">Ніч, уже перевірена на барикаді.</param>
+    /// <exception cref="ArgumentNullException">Ніч не задано.</exception>
+    /// <exception cref="DomainRuleException">
+    /// Бронювання немає, воно не нове або ця ніч уже заброньована.</exception>
+    public void AddNight(int bookingId, BookingNight night)
+    {
+        ArgumentNullException.ThrowIfNull(night);
+        Booking booking = _repository.GetById(bookingId)
+            ?? throw new DomainRuleException(
+                "booking.exists", $"Бронювання № {bookingId} не знайдено");
+        if (booking.Status != BookingStatus.New)
+        {
+            throw new DomainRuleException(
+                "booking.editable",
+                $"Ночі додають лише до нового бронювання, а № {bookingId} у стані {booking.Status}");
+        }
+
+        try
+        {
+            booking.AddNight(night);
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw new DomainRuleException(
+                "booking.night-unique",
+                $"Ніч {night.Date:dd.MM.yyyy} у номері {night.RoomNumber} уже заброньована",
+                ex);
+        }
     }
 
     /// <summary>Обчислює вартість бронювання за політикою. Не змінює стан.</summary>
