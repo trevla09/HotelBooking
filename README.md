@@ -34,3 +34,13 @@ dotnet build -warnaserror
 ## Автор
 
 Ізюменко Тимофій, група 471
+
+## Обробка помилок (ЛР5)
+
+Класифікація помилок - у `docs/errors.md`. Барикада проходить між консоллю
+і ядром: рядки розбирає `HotelBooking.App/Input/BookingNightParser` і повертає
+`Result<BookingNight>`, а ядро приймає лише типізовані значення. Порушення
+правил предметної області - `DomainRuleException` з ідентифікатором правила.
+Журнал пише `ILogger` (Microsoft.Extensions.Logging), аудит операцій -
+файл `audit.log` (у Git не потрапляє).
+

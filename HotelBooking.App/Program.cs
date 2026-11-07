@@ -113,8 +113,13 @@ try
 
     int validCount = BookingNightParser.CountValidNights(["3", "два", "0", "2"]);
     Console.WriteLine($"Коректних кількостей ночей: {validCount}");
+
+    // using закриє файл аудиту навіть тоді, коли нижче буде кинуто виняток.
+    using FileAuditLog? audit = OpenAudit("audit.log", log);
     service.Pay(1, 500m);
+    audit?.Write("Pay", 1);
     service.Cancel(1, "гість змінив плани");
+    audit?.Write("Cancel", 1);
     try
     {
         service.Cancel(1, "повторне скасування");
@@ -122,6 +127,16 @@ try
     catch (DomainRuleException ex)
     {
         log.LogWarning("Правило {Rule}: {Message}", ex.Rule, ex.Message);
+    }
+
+    service.ExportReport(Path.Combine(Path.GetTempPath(), "booking-1.txt"), booking);
+    try
+    {
+        service.ExportReport(Path.Combine("немає-такої-теки", "booking-1.txt"), booking);
+    }
+    catch (IOException)
+    {
+        Console.WriteLine("Не вдалося зберегти звіт: тека недоступна.");
     }
 
     return 0;
@@ -152,4 +167,17 @@ static TotalRequest BuildSampleRequest()
         CouponCode: null,
         Status: BookingStatus.New,
         TransferPrice: 60m);
+}
+
+static FileAuditLog? OpenAudit(string path, ILogger log)
+{
+    try
+    {
+        return new FileAuditLog(path);
+    }
+    catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+    {
+        log.LogWarning(ex, "Журнал аудиту {Path} недоступний, роботу продовжено", path);
+        return null;
+    }
 }

@@ -149,16 +149,25 @@ public sealed class BookingService
         _log.LogInformation("Оплачено на {Amount} грн", amount);
     }
 
-    /// <summary>БУЛО: у разі винятку файл лишається відкритим.</summary>
+    /// <summary>Зберігає короткий звіт про бронювання у файл.</summary>
     /// <param name="path">Шлях до файлу звіту.</param>
     /// <param name="booking">Бронювання.</param>
+    /// <exception cref="IOException">Файл не вдалося записати.</exception>
     public void ExportReport(string path, Booking booking)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(path);
         ArgumentNullException.ThrowIfNull(booking);
-        var writer = new StreamWriter(path);
-        writer.WriteLine($"Бронювання {booking.Id}");
-        writer.WriteLine(TotalOf(booking));
-        writer.Close();
+        try
+        {
+            using var writer = new StreamWriter(path);
+            writer.WriteLine($"Бронювання {booking.Id}");
+            writer.WriteLine(TotalOf(booking));
+        }
+        catch (IOException ex)
+        {
+            _log.LogError(ex, "Не вдалося зберегти звіт {Path}", path);
+            throw;
+        }
     }
 
     /// <summary>Обчислює вартість бронювання за політикою. Не змінює стан.</summary>
