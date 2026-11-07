@@ -19,11 +19,6 @@ indent_size = 2
 [{**/obj/**.cs,*.g.cs,*.Designer.cs}]
 generated_code = true
 
-# ЛР5, тимчасово: погані фрагменти з методички (стан «до»), щоб їх було видно
-# в історії комітів. Файл і секцію видаляють після виправлення антипатернів.
-[HotelBooking.Core/Services/BookingService.Legacy.cs]
-generated_code = true
-
 [*.cs]
 # лише підказка редактору, збірку не зупиняє (F-08 перевіряється на огляді)
 max_line_length = 100

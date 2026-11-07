@@ -7,7 +7,7 @@ using HotelBooking.Core.Errors;
 namespace HotelBooking.Core.Services;
 
 /// <summary>Прикладний сервіс бронювань. Залежності приходять у конструкторі.</summary>
-public sealed partial class BookingService
+public sealed class BookingService
 {
     private readonly IBookingRepository _repository;
     private readonly IPricingPolicy _pricing;
@@ -51,14 +51,12 @@ public sealed partial class BookingService
     public void AddNight(int bookingId, BookingNight night)
     {
         ArgumentNullException.ThrowIfNull(night);
-        Booking booking = _repository.GetById(bookingId)
-            ?? throw new DomainRuleException(
-                "booking.exists", $"Бронювання № {bookingId} не знайдено");
+        Booking booking = Load(bookingId);
         if (booking.Status != BookingStatus.New)
         {
             throw new DomainRuleException(
                 "booking.editable",
-                $"Ночі додають лише до нового бронювання, а № {bookingId} у стані {booking.Status}");
+                $"Ночі додають лише до нового бронювання, № {bookingId}: {booking.Status}");
         }
 
         try
@@ -74,6 +72,39 @@ public sealed partial class BookingService
         }
     }
 
+    /// <summary>Завантажує бронювання за номером.</summary>
+    /// <param name="bookingId">Номер бронювання.</param>
+    /// <returns>Знайдене бронювання.</returns>
+    /// <exception cref="DomainRuleException">Бронювання немає.</exception>
+    public Booking Load(int bookingId) =>
+        _repository.GetById(bookingId)
+            ?? throw new DomainRuleException(
+                "booking.exists", $"Бронювання № {bookingId} не знайдено");
+
+    /// <summary>Скасовує бронювання і сповіщає про причину.</summary>
+    /// <param name="bookingId">Номер бронювання.</param>
+    /// <param name="reason">Причина скасування.</param>
+    /// <exception cref="DomainRuleException">
+    /// Бронювання немає або його стан не дозволяє скасування.</exception>
+    public void Cancel(int bookingId, string reason)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(reason);
+        Booking booking = Load(bookingId);
+        try
+        {
+            booking.Cancel();
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw new DomainRuleException(
+                "booking.cancellable",
+                $"Бронювання № {bookingId} у стані {booking.Status} скасувати не можна",
+                ex);
+        }
+
+        _notifier.Notify($"Бронювання № {bookingId} скасовано: {reason}");
+    }
+
     /// <summary>Оплачує нове бронювання і підтверджує його.</summary>
     /// <param name="bookingId">Номер бронювання.</param>
     /// <param name="amount">Сплачена сума, грн.</param>
@@ -81,9 +112,7 @@ public sealed partial class BookingService
     /// Бронювання немає, воно не нове або сума менша за вартість.</exception>
     public void Pay(int bookingId, decimal amount)
     {
-        Booking booking = _repository.GetById(bookingId)
-            ?? throw new DomainRuleException(
-                "booking.exists", $"Бронювання № {bookingId} не знайдено");
+        Booking booking = Load(bookingId);
         if (booking.Status != BookingStatus.New)
         {
             throw new DomainRuleException(
