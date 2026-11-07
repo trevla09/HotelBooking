@@ -1,9 +1,11 @@
 using System.Globalization;
 using System.Text;
 using HotelBooking.App;
+using HotelBooking.App.Input;
 using HotelBooking.Core.Abstractions;
 using HotelBooking.Core.Bookings;
 using HotelBooking.Core.Domain;
+using HotelBooking.Core.Errors;
 using HotelBooking.Core.Pricing;
 using HotelBooking.Core.Reporting;
 using HotelBooking.Core.Services;
@@ -51,6 +53,43 @@ Console.WriteLine(string.Format(ukrainian, "Сума: {0:0.00}", service.TotalOf
 Console.Write(BookingCsvReport.BuildCsv(repository.GetAll()));
 var archived = new ArchivedBooking(booking, new DateOnly(2026, 11, 12));
 Console.WriteLine($"В архіві: бронювання № {archived.Id}, ночей {archived.Nights.Count}");
+
+// ЛР5. Введення ночей через барикаду: помилка вводу - пояснення й повторний запит.
+const int InputBookingId = 2;
+service.Place(new Booking(InputBookingId, 100, DateTimeOffset.Now));
+Console.WriteLine($"Ночі для бронювання № {InputBookingId} (порожній номер кімнати - завершити).");
+while (true)
+{
+    Console.Write("Номер кімнати: ");
+    string? room = Console.ReadLine();
+    if (string.IsNullOrEmpty(room))
+    {
+        Console.WriteLine("Введення завершено.");
+        break;
+    }
+
+    Console.Write("Дата (дд.мм.рррр): ");
+    string? date = Console.ReadLine();
+    Console.Write("Тариф, грн: ");
+    string? rate = Console.ReadLine();
+
+    Result<BookingNight> parsed = BookingNightParser.Parse(room, date, rate);
+    if (!parsed.IsSuccess)
+    {
+        Console.WriteLine($"Помилка вводу: {parsed.Error}");
+        continue;
+    }
+
+    try
+    {
+        service.AddNight(InputBookingId, parsed.Value!);
+        Console.WriteLine("Ніч додано.");
+    }
+    catch (DomainRuleException ex)
+    {
+        Console.WriteLine($"Не додано: {ex.Message}");
+    }
+}
 
 static TotalRequest BuildSampleRequest()
 {
