@@ -19,6 +19,11 @@ indent_size = 2
 [{**/obj/**.cs,*.g.cs,*.Designer.cs}]
 generated_code = true
 
+# ЛР4, тимчасово: клас-Бог для аудиту SOLID вноситься як є (завдання 5).
+# Секцію видаляють разом із текою Legacy у завданні 6.
+[HotelBooking.Core/Legacy/*.cs]
+generated_code = true
+
 [*.cs]
 # лише підказка редактору, збірку не зупиняє (F-08 перевіряється на огляді)
 max_line_length = 100
