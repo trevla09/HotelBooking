@@ -1,5 +1,4 @@
 using HotelBooking.Core.Bookings;
-using HotelBooking.Core.Legacy;
 using Xunit;
 
 namespace HotelBooking.Tests;

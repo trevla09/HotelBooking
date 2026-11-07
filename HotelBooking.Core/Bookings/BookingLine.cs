@@ -1,4 +1,4 @@
-namespace HotelBooking.Core.Legacy;
+namespace HotelBooking.Core.Bookings;
 
 /// <summary>Рядок бронювання: номер, кількість ночей і тариф за ніч.</summary>
 public sealed class BookingLine

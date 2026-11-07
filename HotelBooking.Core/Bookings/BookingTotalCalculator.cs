@@ -1,11 +1,28 @@
 using HotelBooking.Core.Domain;
-using HotelBooking.Core.Legacy;
 
 namespace HotelBooking.Core.Bookings;
 
 /// <summary>Підпрограми розрахунку вартості бронювання.</summary>
 public static class BookingTotalCalculator
 {
+    /// <summary>Обчислює вартість бронювання і наступний стан. Не змінює стан.</summary>
+    /// <param name="request">Запит на розрахунок.</param>
+    /// <returns>Підсумкова вартість і наступний стан.</returns>
+    public static TotalResult Calculate(TotalRequest request)
+    {
+        BookingGuards.EnsureRequestValid(request);
+        decimal total = SubtotalOf(request.Lines);
+        total -= GuestDiscountOf(total, request.Guest.IsRegular);
+        total -= VolumeDiscountOf(total);
+        total -= CouponDiscountOf(total, request.CouponCode);
+        total -= WeekendDiscountOf(total, request.CreatedAt);
+        total += TransferFeeOf(total, request.TransferPrice);
+        total = request.Status == BookingStatus.Cancelled
+            ? 0m
+            : Math.Round(Math.Max(total, 0m), 2);
+        return new TotalResult(total, NextStatusOf(request.Status, total));
+    }
+
     /// <summary>Обчислює суму рядків бронювання зі знижкою за тривале проживання.</summary>
     /// <param name="lines">Рядки бронювання.</param>
     /// <returns>Сума рядків, грн.</returns>

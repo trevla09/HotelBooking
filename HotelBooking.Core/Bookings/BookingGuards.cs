@@ -1,10 +1,24 @@
-using HotelBooking.Core.Legacy;
-
 namespace HotelBooking.Core.Bookings;
 
 /// <summary>Перевірки передумов для розрахунку вартості бронювання.</summary>
 internal static class BookingGuards
 {
+    /// <summary>Перевіряє весь запит на розрахунок.</summary>
+    /// <param name="request">Запит на розрахунок.</param>
+    /// <exception cref="ArgumentNullException">Запит або гостя не задано.</exception>
+    /// <exception cref="ArgumentException">Дані запиту некоректні.</exception>
+    public static void EnsureRequestValid(TotalRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(request.Guest);
+        EnsureHeaderValid(
+            request.BookingId,
+            request.Guest.Name,
+            request.Guest.Email);
+        EnsureLinesValid(request.Lines);
+        ArgumentOutOfRangeException.ThrowIfNegative(request.TransferPrice);
+    }
+
     /// <summary>Перевіряє заголовок бронювання: номер і контакти гостя.</summary>
     /// <param name="bookingId">Номер бронювання, більший за нуль.</param>
     /// <param name="guestName">Ім'я гостя.</param>
