@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Globalization;
 using HotelBooking.Core.Abstractions;
 using HotelBooking.Core.Domain;
@@ -73,6 +74,32 @@ public sealed partial class BookingService
         }
     }
 
+    /// <summary>Оплачує нове бронювання і підтверджує його.</summary>
+    /// <param name="bookingId">Номер бронювання.</param>
+    /// <param name="amount">Сплачена сума, грн.</param>
+    /// <exception cref="DomainRuleException">
+    /// Бронювання немає, воно не нове або сума менша за вартість.</exception>
+    public void Pay(int bookingId, decimal amount)
+    {
+        Booking booking = _repository.GetById(bookingId)
+            ?? throw new DomainRuleException(
+                "booking.exists", $"Бронювання № {bookingId} не знайдено");
+        if (booking.Status != BookingStatus.New)
+        {
+            throw new DomainRuleException(
+                "booking.payable", $"Стан {booking.Status} не дозволяє оплату");
+        }
+
+        decimal total = TotalOf(booking);
+        if (amount < total)
+        {
+            throw new DomainRuleException(
+                "booking.amount", $"Сплачено {amount:0.00} грн, треба {total:0.00} грн");
+        }
+
+        booking.Confirm();
+    }
+
     /// <summary>Обчислює вартість бронювання за політикою. Не змінює стан.</summary>
     /// <param name="booking">Бронювання.</param>
     /// <returns>Вартість, грн.</returns>
@@ -86,6 +113,7 @@ public sealed partial class BookingService
             total += _pricing.PriceOf(night);
         }
 
+        Debug.Assert(total >= 0m, "Вартість бронювання не може бути від'ємною (CALC-01)");
         return total;
     }
 }
