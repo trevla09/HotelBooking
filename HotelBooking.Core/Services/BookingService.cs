@@ -149,6 +149,18 @@ public sealed class BookingService
         _log.LogInformation("Оплачено на {Amount} грн", amount);
     }
 
+    /// <summary>БУЛО: у разі винятку файл лишається відкритим.</summary>
+    /// <param name="path">Шлях до файлу звіту.</param>
+    /// <param name="booking">Бронювання.</param>
+    public void ExportReport(string path, Booking booking)
+    {
+        ArgumentNullException.ThrowIfNull(booking);
+        var writer = new StreamWriter(path);
+        writer.WriteLine($"Бронювання {booking.Id}");
+        writer.WriteLine(TotalOf(booking));
+        writer.Close();
+    }
+
     /// <summary>Обчислює вартість бронювання за політикою. Не змінює стан.</summary>
     /// <param name="booking">Бронювання.</param>
     /// <returns>Вартість, грн.</returns>
