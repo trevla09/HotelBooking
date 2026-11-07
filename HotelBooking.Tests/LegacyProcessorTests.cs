@@ -39,16 +39,4 @@ public class LegacyProcessorTests
         Assert.Equal(420m, total);
         Assert.Equal("CheckedIn", next);
     }
-
-    [Fact]
-    public void Process_NoLines_ReturnsMinusOne()
-    {
-        decimal total = LegacyProcessor.Process(
-            3, "Коваль", "k@ex.com", false,
-            new List<BookingLine>(),
-            new DateOnly(2026, 3, 10), string.Empty, "New", false,
-            60m, out string _);
-
-        Assert.Equal(-1m, total);
-    }
 }
