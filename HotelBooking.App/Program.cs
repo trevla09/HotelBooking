@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using HotelBooking.App;
 using HotelBooking.Core.Abstractions;
 using HotelBooking.Core.Bookings;
 using HotelBooking.Core.Domain;
@@ -27,9 +28,19 @@ new BookingReportPrinter(Console.Out).Print(report);
 
 // ЛР4. Композиційний корінь: єдине місце, де створюються конкретні реалізації.
 CultureInfo ukrainian = CultureInfo.GetCultureInfo("uk-UA");
+var policies = new Dictionary<string, IPricingPolicy>
+{
+    ["regular"] = new DiscountPricingPolicy(0.05m),
+    ["corporate"] = new CorporatePricingPolicy(),
+    ["staff"] = new DiscountPricingPolicy(0.30m),
+};
+string guestType = "regular";
+IPricingPolicy pricing = policies.TryGetValue(guestType, out IPricingPolicy? found)
+    ? found
+    : new StandardPricingPolicy();
+
 var repository = new InMemoryBookingRepository();
-IPricingPolicy pricing = new DiscountPricingPolicy(0.05m);
-var service = new BookingService(repository, pricing);
+var service = new BookingService(repository, pricing, new ConsoleNotifier());
 
 var booking = new Booking(1, 100, DateTimeOffset.Now);
 booking.AddNight(new BookingNight("101", new DateOnly(2026, 11, 10), 250m));
@@ -37,6 +48,9 @@ booking.AddNight(new BookingNight("101", new DateOnly(2026, 11, 11), 250m));
 service.Place(booking);
 
 Console.WriteLine(string.Format(ukrainian, "Сума: {0:0.00}", service.TotalOf(booking)));
+Console.Write(BookingCsvReport.BuildCsv(repository.GetAll()));
+var archived = new ArchivedBooking(booking, new DateOnly(2026, 11, 12));
+Console.WriteLine($"В архіві: бронювання № {archived.Id}, ночей {archived.Nights.Count}");
 
 static TotalRequest BuildSampleRequest()
 {
