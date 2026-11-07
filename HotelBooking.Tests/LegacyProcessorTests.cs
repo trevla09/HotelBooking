@@ -1,3 +1,4 @@
+using HotelBooking.Core.Domain;
 using HotelBooking.Core.Legacy;
 using Xunit;
 
@@ -16,11 +17,11 @@ public class LegacyProcessorTests
 
         decimal total = LegacyProcessor.Process(
             1, "Іваненко", "i@ex.com", true, lines,
-            new DateOnly(2026, 3, 10), string.Empty, "New", false,
-            60m, out string next);
+            new DateOnly(2026, 3, 10), string.Empty, BookingStatus.New, false,
+            60m, out BookingStatus next);
 
         Assert.Equal(1292.70m, total);
-        Assert.Equal("Confirmed", next);
+        Assert.Equal(BookingStatus.Confirmed, next);
     }
 
     [Fact]
@@ -33,10 +34,10 @@ public class LegacyProcessorTests
 
         decimal total = LegacyProcessor.Process(
             2, "Петренко", "p@ex.com", false, lines,
-            new DateOnly(2026, 3, 10), "SALE10", "Confirmed",
-            false, 60m, out string next);
+            new DateOnly(2026, 3, 10), "SALE10", BookingStatus.Confirmed,
+            false, 60m, out BookingStatus next);
 
         Assert.Equal(420m, total);
-        Assert.Equal("CheckedIn", next);
+        Assert.Equal(BookingStatus.CheckedIn, next);
     }
 }
