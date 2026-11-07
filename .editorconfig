@@ -1,73 +1,238 @@
+# Стандарт кодування HotelBooking, версія 2.0.0 (СР № 1)
+# Рівні: ОБОВ'ЯЗКОВО = error, РЕКОМЕНДОВАНО = suggestion, ДОПУСКАЄТЬСЯ = silent.
+# warning не використовуємо: TreatWarningsAsErrors все одно зробить з нього error.
+# У дужках після кожного блоку - пункт стандарту, який він контролює.
 root = true
 
 [*]
 charset = utf-8
+end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 indent_style = space
 indent_size = 4
 
-[*.{csproj,props,targets,json,yml}]
+[*.{csproj,props,targets,json,yml,xml}]
 indent_size = 2
 
+# згенерований код стандарт не перевіряє (сфера дії, розділ 1)
+[{**/obj/**.cs,*.g.cs,*.Designer.cs}]
+generated_code = true
+
 [*.cs]
+# лише підказка редактору, збірку не зупиняє (F-08 перевіряється на огляді)
 max_line_length = 100
 
+#### Форматування (F) ####
 
+# F-07 дужки Allman
 csharp_new_line_before_open_brace = all
 csharp_new_line_before_else = true
 csharp_new_line_before_catch = true
-csharp_prefer_braces = true:warning
+csharp_new_line_before_finally = true
 csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+
+# F-09 фігурні дужки навіть для одного оператора
+csharp_prefer_braces = true:error
+dotnet_diagnostic.IDE0011.severity = error
+
+# F-13 простір імен файлового рівня
+csharp_style_namespace_declarations = file_scoped:error
+dotnet_diagnostic.IDE0161.severity = error
+
+# F-14 using: System першим, поза простором імен, невживані прибираємо
 dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+csharp_using_directive_placement = outside_namespace:error
+dotnet_diagnostic.IDE0065.severity = error
+dotnet_diagnostic.IDE0005.severity = error
 
+# F-01, F-02, F-18 загальне форматування (відступи, пробіли довкола операторів)
+dotnet_diagnostic.IDE0055.severity = error
 
-csharp_style_namespace_declarations = file_scoped:warning
+# N-01 простір імен відповідає теці
+dotnet_style_namespace_match_folder = true
+dotnet_diagnostic.IDE0130.severity = error
+
+#### Мова і дані (D) ####
+
+# D-03 var лише коли тип видно праворуч; для int, decimal, string - явний тип
 csharp_style_var_for_built_in_types = false:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = false:suggestion
+dotnet_diagnostic.IDE0007.severity = suggestion
+dotnet_diagnostic.IDE0008.severity = suggestion
 
+# D-07 поле, яке не змінюють після конструктора, - readonly
+dotnet_style_readonly_field = true:error
+dotnet_diagnostic.IDE0044.severity = error
 
-dotnet_naming_rule.priv_underscore.symbols = priv_field
-# іменування: константи — PascalCase без підкреслення (перевіряється раніше за правило полів)
-dotnet_naming_rule.const_pascal.symbols = const_field
-dotnet_naming_rule.const_pascal.style = pascal_case_style
-dotnet_naming_rule.const_pascal.severity = warning
-dotnet_naming_symbols.const_field.applicable_kinds = field
+# N-04 без this. перед членами
+dotnet_style_qualification_for_field = false:error
+dotnet_style_qualification_for_property = false:error
+dotnet_style_qualification_for_method = false:error
+dotnet_style_qualification_for_event = false:error
+dotnet_diagnostic.IDE0003.severity = error
+
+# int, string замість Int32, String (порівняння, розділ 7)
+dotnet_style_predefined_type_for_locals_parameters_members = true:error
+dotnet_style_predefined_type_for_member_access = true:error
+dotnet_diagnostic.IDE0049.severity = error
+
+# явні модифікатори доступу (private пишемо завжди)
+dotnet_style_require_accessibility_modifiers = always:error
+dotnet_diagnostic.IDE0040.severity = error
+
+#### Керуючі конструкції (S) ####
+
+# S-05 switch по переліченню обробляє всі члени
+dotnet_diagnostic.IDE0010.severity = suggestion
+dotnet_diagnostic.IDE0072.severity = error
+
+# S-08 без порівняння з true/false
+dotnet_diagnostic.IDE0100.severity = error
+
+# S-04 ланцюг if-else if -> switch-вираз
+csharp_style_prefer_switch_expression = true:suggestion
+dotnet_diagnostic.IDE0066.severity = suggestion
+
+# S-01 перевірка аргументів публічних методів
+dotnet_diagnostic.CA1062.severity = error
+
+# S-13 межа цикломатичної складності (поріг у CodeMetricsConfig.txt)
+dotnet_diagnostic.CA1502.severity = error
+
+#### Типи і колекції (D) ####
+
+# D-11 у публічному API не List<T>
+dotnet_diagnostic.CA1002.severity = error
+
+# N-07 множина лише для [Flags]-перелічень
+dotnet_diagnostic.CA1714.severity = error
+dotnet_diagnostic.CA1717.severity = error
+
+# N-08 параметр узагальненого типу з T
+dotnet_diagnostic.CA1715.severity = error
+
+#### Іменування (N) ####
+# N-02 ... N-11. IDE1006 має бути error, інакше правила нижче складання не зупиняють.
+dotnet_diagnostic.IDE1006.severity = error
+
+# 01 N-06 константи: PascalCase (раніше за правило полів)
+dotnet_naming_rule.n01_const_pascal.symbols = const_field
+dotnet_naming_rule.n01_const_pascal.style = pascal_case
+dotnet_naming_rule.n01_const_pascal.severity = error
+dotnet_naming_symbols.const_field.applicable_kinds = field, local
 dotnet_naming_symbols.const_field.applicable_accessibilities = *
 dotnet_naming_symbols.const_field.required_modifiers = const
-dotnet_naming_style.pascal_case_style.capitalization = pascal_case
-dotnet_naming_rule.priv_underscore.style = underscore_camel
-dotnet_naming_rule.priv_underscore.severity = warning
-dotnet_naming_symbols.priv_field.applicable_kinds = field
-dotnet_naming_symbols.priv_field.applicable_accessibilities = private
+
+# 02 N-05 приватне статичне поле: s_camelCase
+dotnet_naming_rule.n02_static_field.symbols = private_static_field
+dotnet_naming_rule.n02_static_field.style = s_camel
+dotnet_naming_rule.n02_static_field.severity = error
+dotnet_naming_symbols.private_static_field.applicable_kinds = field
+dotnet_naming_symbols.private_static_field.applicable_accessibilities = private, internal
+dotnet_naming_symbols.private_static_field.required_modifiers = static
+
+# 03 N-04 приватне поле: _camelCase
+dotnet_naming_rule.n03_private_field.symbols = private_field
+dotnet_naming_rule.n03_private_field.style = underscore_camel
+dotnet_naming_rule.n03_private_field.severity = error
+dotnet_naming_symbols.private_field.applicable_kinds = field
+dotnet_naming_symbols.private_field.applicable_accessibilities = private, internal
+
+# 04 N-03 інтерфейс: I + PascalCase
+dotnet_naming_rule.n04_interface.symbols = interface_symbol
+dotnet_naming_rule.n04_interface.style = i_pascal
+dotnet_naming_rule.n04_interface.severity = error
+dotnet_naming_symbols.interface_symbol.applicable_kinds = interface
+
+# 05 N-08 параметр узагальненого типу: T + PascalCase
+dotnet_naming_rule.n05_type_param.symbols = type_param_symbol
+dotnet_naming_rule.n05_type_param.style = t_pascal
+dotnet_naming_rule.n05_type_param.severity = error
+dotnet_naming_symbols.type_param_symbol.applicable_kinds = type_parameter
+
+# 06 N-09 асинхронний метод: суфікс Async
+dotnet_naming_rule.n06_async_method.symbols = async_method
+dotnet_naming_rule.n06_async_method.style = pascal_async
+dotnet_naming_rule.n06_async_method.severity = error
+dotnet_naming_symbols.async_method.applicable_kinds = method, local_function
+dotnet_naming_symbols.async_method.required_modifiers = async
+
+# 07 N-02, N-09, N-10, N-12 типи і члени: PascalCase
+dotnet_naming_rule.n07_types_members.symbols = types_and_members
+dotnet_naming_rule.n07_types_members.style = pascal_case
+dotnet_naming_rule.n07_types_members.severity = error
+dotnet_naming_symbols.types_and_members.applicable_kinds = namespace, class, struct, enum, delegate, method, property, event, local_function
+
+# 08 N-11 параметри і локальні змінні: camelCase
+dotnet_naming_rule.n08_locals.symbols = locals_and_params
+dotnet_naming_rule.n08_locals.style = camel_case
+dotnet_naming_rule.n08_locals.severity = error
+dotnet_naming_symbols.locals_and_params.applicable_kinds = parameter, local
+
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+dotnet_naming_style.camel_case.capitalization = camel_case
 dotnet_naming_style.underscore_camel.capitalization = camel_case
 dotnet_naming_style.underscore_camel.required_prefix = _
+dotnet_naming_style.s_camel.capitalization = camel_case
+dotnet_naming_style.s_camel.required_prefix = s_
+dotnet_naming_style.i_pascal.capitalization = pascal_case
+dotnet_naming_style.i_pascal.required_prefix = I
+dotnet_naming_style.t_pascal.capitalization = pascal_case
+dotnet_naming_style.t_pascal.required_prefix = T
+dotnet_naming_style.pascal_async.capitalization = pascal_case
+dotnet_naming_style.pascal_async.required_suffix = Async
 
-# StyleCop: свідомо вимкнені правила
-# заголовок з ліцензією в навчальному проєкті не потрібен
-dotnet_diagnostic.SA1633.severity = none
-# префікс this. суперечить конвенції .NET
-dotnet_diagnostic.SA1101.severity = none
-# using поза namespace — стандарт шаблонів .NET
-dotnet_diagnostic.SA1200.severity = none
-# приватні поля іменуємо з _, як прийнято в .NET
+#### StyleCop: що лишаємо суворим ####
+# F-06 без пробілів у кінці рядка
+dotnet_diagnostic.SA1028.severity = error
+# F-12 порядок членів класу
+dotnet_diagnostic.SA1201.severity = error
+dotnet_diagnostic.SA1202.severity = error
+dotnet_diagnostic.SA1204.severity = error
+# F-11 один тип на файл, N-15 ім'я файлу = ім'я типу
+dotnet_diagnostic.SA1402.severity = error
+dotnet_diagnostic.SA1649.severity = error
+# F-17 один оператор на рядок
+dotnet_diagnostic.SA1107.severity = error
+# F-09 дужки в багаторядкових конструкціях
+dotnet_diagnostic.SA1503.severity = error
+# F-10 порожні рядки
+dotnet_diagnostic.SA1505.severity = error
+dotnet_diagnostic.SA1507.severity = error
+dotnet_diagnostic.SA1516.severity = error
+# F-15 перенесення параметрів (рекомендовано)
+dotnet_diagnostic.SA1116.severity = suggestion
+dotnet_diagnostic.SA1117.severity = suggestion
+# F-16 #region заборонено
+dotnet_diagnostic.SA1124.severity = error
+# C-08 документація публічних членів
+dotnet_diagnostic.SA1600.severity = error
+dotnet_diagnostic.SA1601.severity = error
+dotnet_diagnostic.SA1602.severity = error
+dotnet_diagnostic.CS1591.severity = error
+# C-09 summary закінчується крапкою
+dotnet_diagnostic.SA1629.severity = error
+# C-12 param і returns для всіх параметрів і значень
+dotnet_diagnostic.SA1611.severity = error
+dotnet_diagnostic.SA1615.severity = error
+
+#### StyleCop: свідомо вимкнені правила (A-04) ####
+# SA1309 забороняє поле з "_" на початку, а N-04 саме цього вимагає.
+# Конвенцію _camelCase контролює IDE1006 (правило n03 вище). Див. РШ-001.
 dotnet_diagnostic.SA1309.severity = none
-# документація українською, а правила вимагають англійських шаблонів
-# "Gets ..." для властивостей і "Initializes a new instance ..." для конструкторів
+# SA1101 вимагає this. перед кожним членом; N-04 і IDE0003 вимагають протилежного.
+dotnet_diagnostic.SA1101.severity = none
+# заголовок з ліцензією в навчальному проєкті одного автора не потрібен
+dotnet_diagnostic.SA1633.severity = none
+# using поза простором імен (F-14) - SA1200 за замовчуванням хоче навпаки
+dotnet_diagnostic.SA1200.severity = none
+# документація українською (C-13), а ці правила вимагають англійських
+# шаблонів "Gets ..." і "Initializes a new instance ..."
 dotnet_diagnostic.SA1623.severity = none
 dotnet_diagnostic.SA1642.severity = none
-# у консольному застосунку XML-документацію не генеруємо, тому SA0001 вимкнено
-dotnet_diagnostic.SA0001.severity = none
-# з ЛР № 2 документація обов'язкова (GenerateDocumentationFile у Core)
-dotnet_diagnostic.SA1600.severity = warning
-dotnet_diagnostic.SA1601.severity = warning
-dotnet_diagnostic.SA1602.severity = warning
-# кома в кінці багаторядкового ініціалізатора необов'язкова
+# кома в кінці багаторядкового ініціалізатора - на смак автора (ДОПУСКАЄТЬСЯ)
 dotnet_diagnostic.SA1413.severity = none
-
-# правила, які лишаємо суворими
-dotnet_diagnostic.SA1028.severity = warning
-dotnet_diagnostic.SA1201.severity = warning
-dotnet_diagnostic.SA1503.severity = warning
-dotnet_diagnostic.SA1507.severity = warning
-dotnet_diagnostic.SA1516.severity = warning
-dotnet_diagnostic.IDE0055.severity = warning

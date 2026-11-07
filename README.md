@@ -21,8 +21,15 @@ dotnet run --project HotelBooking.App
 
 ## Стандарт кодування
 
-Правила описано у файлі [CODING_STANDARD.md](CODING_STANDARD.md) і закріплено
-в `.editorconfig`. Перевірка: `dotnet format --verify-no-changes`
+Правила (версія 2.0.0) описано у файлі [CODING_STANDARD.md](CODING_STANDARD.md) і закріплено
+в `.editorconfig` та `Directory.Build.props`. Чекліст огляду і журнал рішень - у `docs/standard/`.
+
+Перевірка перед комітом:
+
+```
+dotnet format --verify-no-changes
+dotnet build -warnaserror
+```
 
 ## Автор
 

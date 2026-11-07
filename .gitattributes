@@ -1,0 +1,4 @@
+# усі текстові файли в репозиторії з LF (F-03, РШ-002)
+* text=auto eol=lf
+*.png binary
+*.jpg binary
