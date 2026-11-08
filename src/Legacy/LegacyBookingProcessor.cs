@@ -19,6 +19,8 @@ public class RoomLine
     public int Nights;
     public decimal Rate;
     public string Category = "";
+
+    public decimal Amount => Nights * Rate;
 }
 
 public class LegacyBookingProcessor
@@ -40,24 +42,17 @@ public class LegacyBookingProcessor
         _log.Add("ok " + bookingId);
 
         _tmpSum = Subtotal(lines);
-        _tmpDiscount = DiscountOf(_tmpSum, guestKind, guestStays);
-        decimal ship = ShippingOf(_tmpSum - _tmpDiscount);
+        _tmpDiscount = DiscountPolicy.For(_tmpSum, guestKind, guestStays);
+        decimal ship = ShippingPolicy.For(_tmpSum - _tmpDiscount);
         decimal total = _tmpSum - _tmpDiscount + ship;
 
-        string txt = "Документ #" + bookingId + "\n";
-        txt += "Клієнт: " + guestName + "\n";
-        for (int i = 0; i < lines.Count; i++)
-        {
-            txt += lines[i].RoomNumber + " x" + lines[i].Nights + " = " +
-                (lines[i].Nights * lines[i].Rate)
-                    .ToString("0.00") + " " + currency + "\n";
-        }
-        txt += "Знижка: " + _tmpDiscount.ToString("0.00") +
-            " " + currency + "\n";
-        txt += "Доставка: " + ship.ToString("0.00") +
-            " " + currency + "\n";
-        txt += "Разом: " + total.ToString("0.00") +
-            " " + currency + "\n";
+        string txt = new ReportBuilder(currency)
+            .Header(bookingId, guestName)
+            .Lines(lines)
+            .Row("Знижка", _tmpDiscount)
+            .Row("Доставка", ship)
+            .Row("Разом", total)
+            .Build();
 
         if (sendMail)
         {
@@ -69,43 +64,19 @@ public class LegacyBookingProcessor
     private static decimal Subtotal(List<RoomLine> lines)
     {
         decimal sum = 0m;
-        for (int i = 0; i < lines.Count; i++)
+        foreach (var line in lines)
         {
-            sum += lines[i].Nights * lines[i].Rate;
+            sum += line.Amount;
         }
         return sum;
     }
-
-    private static decimal DiscountOf(decimal subtotal, GuestKind guestKind, int guestStays)
-    {
-        decimal discount = 0m;
-        if (guestKind == GuestKind.Vip)
-        {
-            discount = subtotal * PricingRules.VipRate;
-            if (discount > PricingRules.MaxDiscount) discount = PricingRules.MaxDiscount;
-        }
-        else if (guestKind == GuestKind.Staff)
-        {
-            discount = subtotal * PricingRules.StaffRate;
-            if (discount > PricingRules.MaxDiscount) discount = PricingRules.MaxDiscount;
-        }
-        else if (guestStays > PricingRules.LoyalStays)
-        {
-            discount = subtotal * PricingRules.LoyalRate;
-            if (discount > PricingRules.MaxDiscount) discount = PricingRules.MaxDiscount;
-        }
-        return discount;
-    }
-
-    private static decimal ShippingOf(decimal payable) =>
-        payable < PricingRules.FreeShipFrom ? PricingRules.ShipCost : 0m;
 
     public decimal Preview(GuestKind guestKind, int guestStays,
         List<RoomLine> lines)
     {
         decimal subtotal = Subtotal(lines);
-        decimal payable = subtotal - DiscountOf(subtotal, guestKind, guestStays);
-        return payable + ShippingOf(payable);
+        decimal payable = subtotal - DiscountPolicy.For(subtotal, guestKind, guestStays);
+        return payable + ShippingPolicy.For(payable);
     }
 
     public string DescribeGuest(Guest g)
