@@ -34,4 +34,14 @@ public class VolumeDiscountOfTests
 
         Assert.Equal("amount", ex.ParamName);
     }
+
+    [Fact]
+    public void VolumeDiscountOf_HugeBooking_IsCappedAtMax()
+    {
+        decimal amount = 15000m;
+
+        decimal actual = BookingTotalCalculator.VolumeDiscountOf(amount);
+
+        Assert.Equal(1000m, actual);
+    }
 }
