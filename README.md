@@ -1,5 +1,7 @@
 # HotelBooking
 
+![CI](https://github.com/trevla09/HotelBooking/actions/workflows/ci.yml/badge.svg)
+
 Навчальний проєкт з дисципліни «Конструювання програмного забезпечення».
 Варіант № 8: бронювання номерів у готелі.
 
