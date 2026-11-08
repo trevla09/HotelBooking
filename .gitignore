@@ -487,3 +487,9 @@ $RECYCLE.BIN/
 *.user
 data/*.local.json
 !HotelBooking.App/
+
+# ЛР7: результати запусків тестів і звіти покриття
+bin/
+obj/
+TestResults/
+coverage/
