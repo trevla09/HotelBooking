@@ -1,6 +1,7 @@
 <Project>
   <!-- Спільні властивості для всіх проєктів рішення. Стандарт кодування v2.0.0, розділ 6. -->
   <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -10,6 +11,19 @@
     <AnalysisMode>Recommended</AnalysisMode>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- ЛР8: семантична версія збірки й відомості про продукт -->
+  <PropertyGroup>
+    <VersionPrefix>0.8.0</VersionPrefix>
+    <Authors>Тимофій Ізюменко</Authors>
+    <Product>HotelBooking</Product>
+  </PropertyGroup>
+
+  <!-- ЛР8: аудит вразливих пакетів під час restore, разом із транзитивними -->
+  <PropertyGroup>
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditMode>all</NuGetAuditMode>
   </PropertyGroup>
 
   <ItemGroup>

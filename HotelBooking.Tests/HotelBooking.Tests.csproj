@@ -1,14 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <!-- Поріг покриття рахуємо за ядром і барикадою вводу; Program.cs - лише композиція. -->
+    <Include>[HotelBooking.Core]*,[HotelBooking.App]HotelBooking.App.Input.*</Include>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="xunit" Version="2.6.2" />
+    <PackageReference Include="coverlet.msbuild" Version="6.0.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="coverlet.collector" Version="6.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -19,8 +24,17 @@
     </PackageReference>
   </ItemGroup>
 
+  <!-- xunit 2.6 для netstandard1.1 тягне NETStandard.Library 1.6.1 зі старими
+       System.Net.Http і System.Text.RegularExpressions (аудит залежностей показав
+       для них вразливості High). Явно піднімаємо їх до виправлених версій. -->
+  <ItemGroup>
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\HotelBooking.Core\HotelBooking.Core.csproj" />
+    <ProjectReference Include="..\HotelBooking.App\HotelBooking.App.csproj" />
   </ItemGroup>
 
 </Project>

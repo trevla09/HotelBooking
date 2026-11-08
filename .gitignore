@@ -493,3 +493,8 @@ bin/
 obj/
 TestResults/
 coverage/
+
+# ЛР8: локальні налаштування й секрети не потрапляють у репозиторій
+appsettings.Local.json
+**/*.secrets.json
+.env*

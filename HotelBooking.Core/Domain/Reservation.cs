@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 
 namespace HotelBooking.Core.Domain;
 
@@ -45,7 +45,7 @@ public class Reservation
 
     /// <summary>Стан: бронювання скасоване.</summary>
     private const int StatusCancelled = 3;
-    private readonly List<ReservationLine> _lines = new List<ReservationLine>();
+    private readonly List<ReservationLine> _lines = new();
 
     /// <summary>
     /// Створює нове бронювання для гостя.

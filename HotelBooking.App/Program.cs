@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text;
 using HotelBooking.App;
 using HotelBooking.App.Input;
+using HotelBooking.Core;
 using HotelBooking.Core.Abstractions;
 using HotelBooking.Core.Bookings;
 using HotelBooking.Core.Domain;
@@ -13,6 +14,7 @@ using HotelBooking.Core.Storage;
 using Microsoft.Extensions.Logging;
 
 Console.OutputEncoding = Encoding.UTF8;
+Console.WriteLine($"HotelBooking v{VersionInfo.Current()}");
 
 using ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
 {
