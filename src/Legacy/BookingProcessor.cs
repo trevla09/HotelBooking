@@ -13,6 +13,19 @@ public class Guest
     public DateTime SinceUtc;
 
     public bool HasValidEmail => !string.IsNullOrEmpty(Email) && Email.Contains('@');
+
+    public bool IsLoyal => StaysCount > PricingRules.LoyalStays;
+
+    public string Describe()
+    {
+        string s = Name.Trim().ToUpper();
+        if (Kind == GuestKind.Vip) s += " [VIP]";
+        if (IsLoyal) s += " [ЛОЯЛЬНИЙ]";
+        s += " <" + Email.ToLower() + ">";
+        int years = DateTime.Now.Year - SinceUtc.Year;
+        s += " стаж " + years;
+        return s;
+    }
 }
 
 public class RoomLine
@@ -84,17 +97,6 @@ public class BookingProcessor
         decimal subtotal = Subtotal(lines);
         decimal payable = subtotal - DiscountPolicy.For(subtotal, guestKind, guestStays);
         return payable + ShippingPolicy.For(payable);
-    }
-
-    public string DescribeGuest(Guest g)
-    {
-        string s = g.Name.Trim().ToUpper();
-        if (g.Kind == GuestKind.Vip) s += " [VIP]";
-        if (g.StaysCount > PricingRules.LoyalStays) s += " [ЛОЯЛЬНИЙ]";
-        s += " <" + g.Email.ToLower() + ">";
-        int years = DateTime.Now.Year - g.SinceUtc.Year;
-        s += " стаж " + years;
-        return s;
     }
 
     public string DumpLog()

@@ -99,7 +99,7 @@ public class LegacyCharacterizationTests
     }
 
     [Fact]
-    public void DescribeGuest_Vip_BuildsCaption()
+    public void Describe_Vip_BuildsCaption()
     {
         var g = new Guest
         {
@@ -114,7 +114,7 @@ public class LegacyCharacterizationTests
         var years = DateTime.Now.Year - 2020;
         var expected = "ІВАН [VIP] [ЛОЯЛЬНИЙ] <ivan@mail.com> стаж " + years;
 
-        var actual = new BookingProcessor().DescribeGuest(g);
+        var actual = g.Describe();
 
         Assert.Equal(expected, actual);
     }
