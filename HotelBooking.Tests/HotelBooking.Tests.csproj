@@ -25,11 +25,10 @@
   </ItemGroup>
 
   <!-- xunit 2.6 для netstandard1.1 тягне NETStandard.Library 1.6.1 зі старими
-       System.Net.Http, System.Private.Uri і System.Text.RegularExpressions,
-       які мають відомі вразливості. Явно піднімаємо їх до виправлених версій. -->
+       System.Net.Http і System.Text.RegularExpressions (аудит залежностей показав
+       для них вразливості High). Явно піднімаємо їх до виправлених версій. -->
   <ItemGroup>
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.Private.Uri" Version="4.3.2" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 

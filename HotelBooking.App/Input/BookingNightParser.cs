@@ -24,7 +24,10 @@ internal static class BookingNightParser
         string room = roomNumber?.Trim() ?? string.Empty;
         if (room.Length == 0 || room.Length > MaxRoomNumberLength)
         {
-            return Result<BookingNight>.Fail("Номер кімнати - від 1 до 10 символів");
+            return Result<BookingNight>.Fail(string.Format(
+                CultureInfo.InvariantCulture,
+                "Номер кімнати - від 1 до {0} символів",
+                MaxRoomNumberLength));
         }
 
         if (!DateOnly.TryParseExact(
@@ -41,7 +44,10 @@ internal static class BookingNightParser
             || price < 0m
             || price > MaxRate)
         {
-            return Result<BookingNight>.Fail("Тариф - число від 0 до 100 000, наприклад 250,50");
+            return Result<BookingNight>.Fail(string.Format(
+                ukrainian,
+                "Тариф - число від 0 до {0:N0}, наприклад 250,50",
+                MaxRate));
         }
 
         return Result<BookingNight>.Ok(new BookingNight(room, day, price));

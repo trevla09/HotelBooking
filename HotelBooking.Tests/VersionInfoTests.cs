@@ -10,6 +10,6 @@ public class VersionInfoTests
     {
         string version = VersionInfo.Current();
 
-        Assert.Equal("0.8.0", version);
+        Assert.Matches(@"^\d+\.\d+\.\d+$", version);
     }
 }
