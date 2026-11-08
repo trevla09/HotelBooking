@@ -11,6 +11,8 @@ public class Guest
     public GuestKind Kind = GuestKind.Regular;
     public int StaysCount;
     public DateTime SinceUtc;
+
+    public bool HasValidEmail => !string.IsNullOrEmpty(Email) && Email.Contains('@');
 }
 
 public class RoomLine
@@ -23,45 +25,50 @@ public class RoomLine
     public decimal Amount => Nights * Rate;
 }
 
-public class LegacyBookingProcessor
+public class BookingProcessor
 {
     private decimal _tmpSum;
     private decimal _tmpDiscount;
     private readonly List<string> _log = new();
 
-    public string Handle(int bookingId, int guestId,
-        string guestName, string? guestMail,
-        GuestKind guestKind, int guestStays,
-        List<RoomLine>? lines, BookingState state,
-        string currency, DateTime createdAt, bool sendMail)
+    public string Handle(BookingRequest request)
     {
-        if (lines is null) return "ERR: null";
-        if (lines.Count == 0) return "ERR: empty";
-        if (state is not (BookingState.New or BookingState.Paid)) return "ERR: state";
-        if (guestMail is null || !guestMail.Contains("@")) return "ERR: mail";
-        _log.Add("ok " + bookingId);
+        string? error = Validate(request);
+        if (error is not null) return error;
+        _log.Add("ok " + request.BookingId);
 
+        var lines = request.Lines!;
+        var client = request.Client;
         _tmpSum = Subtotal(lines);
-        _tmpDiscount = DiscountPolicy.For(_tmpSum, guestKind, guestStays);
+        _tmpDiscount = DiscountPolicy.For(_tmpSum, client.Kind, client.StaysCount);
         decimal ship = ShippingPolicy.For(_tmpSum - _tmpDiscount);
         decimal total = _tmpSum - _tmpDiscount + ship;
 
-        string txt = new ReportBuilder(currency)
-            .Header(bookingId, guestName)
+        string txt = new ReportBuilder(request.Currency)
+            .Header(request.BookingId, client.Name)
             .Lines(lines)
             .Row("Знижка", _tmpDiscount)
             .Row("Доставка", ship)
             .Row("Разом", total)
             .Build();
 
-        if (sendMail)
+        if (request.SendMail)
         {
-            _log.Add("mail -> " + guestMail);
+            _log.Add("mail -> " + client.Email);
         }
         return txt;
     }
 
-    private static decimal Subtotal(List<RoomLine> lines)
+    private static string? Validate(BookingRequest request)
+    {
+        if (request.Lines is null) return "ERR: null";
+        if (request.Lines.Count == 0) return "ERR: empty";
+        if (request.State is not (BookingState.New or BookingState.Paid)) return "ERR: state";
+        if (!request.Client.HasValidEmail) return "ERR: mail";
+        return null;
+    }
+
+    private static decimal Subtotal(IReadOnlyList<RoomLine> lines)
     {
         decimal sum = 0m;
         foreach (var line in lines)

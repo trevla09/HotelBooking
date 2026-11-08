@@ -17,6 +17,18 @@ public class LegacyCharacterizationTests
         new RoomLine { RoomNumber = "204", Nights = 1, Rate = 400m }
     };
 
+    private static BookingRequest Request(
+        List<RoomLine>? lines,
+        BookingState state,
+        string mail,
+        GuestKind kind = GuestKind.Regular,
+        int stays = 0,
+        bool sendMail = false)
+    {
+        var client = new Guest { Name = "Іван", Email = mail, Kind = kind, StaysCount = stays };
+        return new BookingRequest(1001, client, lines, state, "UAH", sendMail);
+    }
+
     [Theory]
     [InlineData(null, BookingState.New, "a@b.c", "ERR: null")]
     [InlineData("empty", BookingState.New, "a@b.c", "ERR: empty")]
@@ -31,11 +43,9 @@ public class LegacyCharacterizationTests
             "empty" => new List<RoomLine>(),
             _ => null
         };
-        var sut = new LegacyBookingProcessor();
+        var sut = new BookingProcessor();
 
-        var actual = sut.Handle(1001, 7, "Іван", mail,
-            GuestKind.Regular, 0, lines, state, "UAH",
-            new DateTime(2026, 3, 1), false);
+        var actual = sut.Handle(Request(lines, state, mail));
 
         Assert.Equal(expected, actual);
     }
@@ -43,11 +53,10 @@ public class LegacyCharacterizationTests
     [Fact]
     public void Handle_VipBooking_ReturnsExactReport()
     {
-        var sut = new LegacyBookingProcessor();
+        var sut = new BookingProcessor();
 
-        var report = sut.Handle(1001, 7, "Іван", "a@b.c",
-            GuestKind.Vip, 3, TwoLines(), BookingState.New, "UAH",
-            new DateTime(2026, 3, 1), false);
+        var report = sut.Handle(
+            Request(TwoLines(), BookingState.New, "a@b.c", GuestKind.Vip, 3));
 
         var expected =
             "Документ #1001\n" +
@@ -67,7 +76,7 @@ public class LegacyCharacterizationTests
     [InlineData(GuestKind.Regular, 11, 725)]
     public void Preview_ByKind_ReturnsTotal(GuestKind kind, int stays, decimal expected)
     {
-        var sut = new LegacyBookingProcessor();
+        var sut = new BookingProcessor();
 
         var total = sut.Preview(kind, stays, TwoLines());
 
@@ -82,7 +91,7 @@ public class LegacyCharacterizationTests
         {
             new RoomLine { RoomNumber = "305", Nights = 4, Rate = 250m }
         };
-        var sut = new LegacyBookingProcessor();
+        var sut = new BookingProcessor();
 
         var total = sut.Preview(GuestKind.Regular, 0, lines);
 
@@ -105,7 +114,7 @@ public class LegacyCharacterizationTests
         var years = DateTime.Now.Year - 2020;
         var expected = "ІВАН [VIP] [ЛОЯЛЬНИЙ] <ivan@mail.com> стаж " + years;
 
-        var actual = new LegacyBookingProcessor().DescribeGuest(g);
+        var actual = new BookingProcessor().DescribeGuest(g);
 
         Assert.Equal(expected, actual);
     }
@@ -113,10 +122,8 @@ public class LegacyCharacterizationTests
     [Fact]
     public void DumpLog_AfterHandleWithMail_ListsEntries()
     {
-        var sut = new LegacyBookingProcessor();
-        sut.Handle(1001, 7, "Іван", "a@b.c",
-            GuestKind.Regular, 0, TwoLines(), BookingState.Paid, "UAH",
-            new DateTime(2026, 3, 1), true);
+        var sut = new BookingProcessor();
+        sut.Handle(Request(TwoLines(), BookingState.Paid, "a@b.c", sendMail: true));
 
         var log = sut.DumpLog();
 
