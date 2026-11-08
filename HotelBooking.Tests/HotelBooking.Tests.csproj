@@ -3,6 +3,8 @@
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <!-- Поріг покриття рахуємо за ядром і барикадою вводу; Program.cs - лише композиція. -->
+    <Include>[HotelBooking.Core]*,[HotelBooking.App]HotelBooking.App.Input.*</Include>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HotelBooking.Core\HotelBooking.Core.csproj" />
+    <ProjectReference Include="..\HotelBooking.App\HotelBooking.App.csproj" />
   </ItemGroup>
 
 </Project>

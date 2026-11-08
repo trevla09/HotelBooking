@@ -7,6 +7,12 @@ namespace HotelBooking.App.Input;
 /// <summary>Барикада: перетворює рядки з консолі на перевірену ніч проживання.</summary>
 internal static class BookingNightParser
 {
+    /// <summary>Найдовший допустимий номер кімнати, символів.</summary>
+    private const int MaxRoomNumberLength = 10;
+
+    /// <summary>Найбільший допустимий тариф за ніч, грн.</summary>
+    private const decimal MaxRate = 100_000m;
+
     /// <summary>Розбирає введені рядки.</summary>
     /// <param name="roomNumber">Номер кімнати.</param>
     /// <param name="date">Дата у форматі дд.мм.рррр.</param>
@@ -15,9 +21,10 @@ internal static class BookingNightParser
     public static Result<BookingNight> Parse(string? roomNumber, string? date, string? rate)
     {
         CultureInfo ukrainian = CultureInfo.GetCultureInfo("uk-UA");
-        if (string.IsNullOrWhiteSpace(roomNumber))
+        string room = roomNumber?.Trim() ?? string.Empty;
+        if (room.Length == 0 || room.Length > MaxRoomNumberLength)
         {
-            return Result<BookingNight>.Fail("Номер кімнати не може бути порожнім");
+            return Result<BookingNight>.Fail("Номер кімнати - від 1 до 10 символів");
         }
 
         if (!DateOnly.TryParseExact(
@@ -31,12 +38,13 @@ internal static class BookingNightParser
         }
 
         if (!decimal.TryParse(rate, NumberStyles.Number, ukrainian, out decimal price)
-            || price < 0m)
+            || price < 0m
+            || price > MaxRate)
         {
-            return Result<BookingNight>.Fail("Тариф - число не менше 0, наприклад 250,50");
+            return Result<BookingNight>.Fail("Тариф - число від 0 до 100 000, наприклад 250,50");
         }
 
-        return Result<BookingNight>.Ok(new BookingNight(roomNumber.Trim(), day, price));
+        return Result<BookingNight>.Ok(new BookingNight(room, day, price));
     }
 
     /// <summary>Рахує рядки з коректною кількістю ночей (ціле число більше 0).</summary>
