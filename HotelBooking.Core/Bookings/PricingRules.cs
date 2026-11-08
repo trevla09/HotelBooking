@@ -18,6 +18,9 @@ public static class PricingRules
     /// <summary>Частка знижки для великого бронювання.</summary>
     public const decimal LargeBookingRate = 0.10m;
 
+    /// <summary>Найбільша знижка за обсягом бронювання, грн.</summary>
+    public const decimal MaxVolumeDiscount = 1000m;
+
     /// <summary>Сума, понад яку бронювання вважається середнім, грн.</summary>
     public const decimal MediumBookingFrom = 2000m;
 

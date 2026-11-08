@@ -64,7 +64,13 @@ public static class BookingTotalCalculator
         ArgumentOutOfRangeException.ThrowIfNegative(amount);
         if (amount > PricingRules.LargeBookingFrom)
         {
-            return amount * PricingRules.LargeBookingRate;
+            decimal discount = amount * PricingRules.LargeBookingRate;
+            if (discount > PricingRules.MaxVolumeDiscount)
+            {
+                discount = PricingRules.MaxVolumeDiscount;
+            }
+
+            return discount;
         }
 
         if (amount > PricingRules.MediumBookingFrom)
