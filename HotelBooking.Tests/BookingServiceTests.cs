@@ -60,6 +60,22 @@ public class BookingServiceTests
         Assert.Contains("сума 500.00 грн", message);
     }
 
+    [Fact]
+    public void Pay_LessThanTotal_ThrowsAmountRule()
+    {
+        FakeBookingRepository repository = new();
+        BookingService service = NewService(repository, 250m, new SpyNotifier());
+        Booking booking = NewBooking(5);
+        booking.AddNight(new BookingNight("101", new DateOnly(2026, 11, 10), 250m));
+        repository.Add(booking);
+
+        DomainRuleException ex = Assert.Throws<DomainRuleException>(
+            () => service.Pay(5, 249.99m));
+
+        Assert.Equal("booking.amount", ex.Rule);
+        Assert.Equal(BookingStatus.New, booking.Status);
+    }
+
     private static BookingService NewService(
         FakeBookingRepository repository, decimal price, SpyNotifier notifier) =>
         new(
