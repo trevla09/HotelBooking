@@ -1,19 +1,28 @@
+using System.Text;
+
 namespace HotelBooking.Core.Reporting;
 
-// Клас навмисно містить дефекти для тренування.
-public class ReportBuilder
+/// <summary>Формує текст простого звіту з готових рядків.</summary>
+public sealed class ReportBuilder
 {
-    public string Title = "Звіт";
+    /// <summary>Заголовок звіту.</summary>
+    public string Title { get; init; } = "Звіт";
 
-    public string Build(List<string> rows)
+    /// <summary>Будує звіт: заголовок великими літерами і рядки під ним.</summary>
+    /// <param name="rows">Рядки звіту.</param>
+    /// <returns>Текст звіту.</returns>
+    /// <exception cref="ArgumentNullException">Рядки не задано.</exception>
+    public string Build(IReadOnlyList<string> rows)
     {
-        string text = "";
-        int notUsed = 0;
-        foreach (var row in rows)
+        ArgumentNullException.ThrowIfNull(rows);
+
+        var text = new StringBuilder();
+        text.AppendLine(Title.ToUpperInvariant());
+        foreach (string row in rows)
         {
-            text = text + row + Environment.NewLine;
+            text.AppendLine(row);
         }
 
-        return Title.ToUpper() + Environment.NewLine + text;
+        return text.ToString();
     }
 }
