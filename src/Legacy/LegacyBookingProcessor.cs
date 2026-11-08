@@ -33,36 +33,11 @@ public class LegacyBookingProcessor
         List<RoomLine>? lines, BookingState state,
         string currency, DateTime createdAt, bool sendMail)
     {
-        if (lines != null)
-        {
-            if (lines.Count > 0)
-            {
-                if (state == BookingState.New || state == BookingState.Paid)
-                {
-                    if (guestMail != null &&
-                        guestMail.Contains("@"))
-                    {
-                        _log.Add("ok " + bookingId);
-                    }
-                    else
-                    {
-                        return "ERR: mail";
-                    }
-                }
-                else
-                {
-                    return "ERR: state";
-                }
-            }
-            else
-            {
-                return "ERR: empty";
-            }
-        }
-        else
-        {
-            return "ERR: null";
-        }
+        if (lines is null) return "ERR: null";
+        if (lines.Count == 0) return "ERR: empty";
+        if (state is not (BookingState.New or BookingState.Paid)) return "ERR: state";
+        if (guestMail is null || !guestMail.Contains("@")) return "ERR: mail";
+        _log.Add("ok " + bookingId);
 
         _tmpSum = 0m;
         for (int i = 0; i < lines.Count; i++)
