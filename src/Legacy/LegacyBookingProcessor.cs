@@ -103,30 +103,9 @@ public class LegacyBookingProcessor
     public decimal Preview(GuestKind guestKind, int guestStays,
         List<RoomLine> lines)
     {
-        decimal s = 0m;
-        foreach (var it in lines)
-        {
-            s += it.Nights * it.Rate;
-        }
-        decimal d = 0m;
-        if (guestKind == GuestKind.Vip)
-        {
-            d = s * PricingRules.VipRate;
-            if (d > PricingRules.MaxDiscount) d = PricingRules.MaxDiscount;
-        }
-        else if (guestKind == GuestKind.Staff)
-        {
-            d = s * PricingRules.StaffRate;
-            if (d > PricingRules.MaxDiscount) d = PricingRules.MaxDiscount;
-        }
-        else if (guestStays > PricingRules.LoyalStays)
-        {
-            d = s * PricingRules.LoyalRate;
-            if (d > PricingRules.MaxDiscount) d = PricingRules.MaxDiscount;
-        }
-        decimal sh = 0m;
-        if (s - d < PricingRules.FreeShipFrom) sh = PricingRules.ShipCost;
-        return s - d + sh;
+        decimal subtotal = Subtotal(lines);
+        decimal payable = subtotal - DiscountOf(subtotal, guestKind, guestStays);
+        return payable + ShippingOf(payable);
     }
 
     public string DescribeGuest(Guest g)
