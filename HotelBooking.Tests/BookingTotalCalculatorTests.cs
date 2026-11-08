@@ -80,4 +80,22 @@ public class BookingTotalCalculatorTests
 
         Assert.Equal(0m, discount);
     }
+
+    [Fact]
+    public void CouponDiscountOf_FixedCouponAboveThreshold_Returns200()
+    {
+        decimal discount = BookingTotalCalculator.CouponDiscountOf(1500m, "MINUS200");
+
+        Assert.Equal(200m, discount);
+    }
+
+    [Fact]
+    public void WeekendDiscountOf_Sunday_ReturnsTwoPercent()
+    {
+        DateOnly sunday = new(2026, 11, 8);
+
+        decimal discount = BookingTotalCalculator.WeekendDiscountOf(1000m, sunday);
+
+        Assert.Equal(20m, discount);
+    }
 }

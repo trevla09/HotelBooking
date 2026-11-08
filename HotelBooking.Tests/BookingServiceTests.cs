@@ -76,6 +76,128 @@ public class BookingServiceTests
         Assert.Equal(BookingStatus.New, booking.Status);
     }
 
+    [Theory]
+    [InlineData(250)]
+    [InlineData(300)]
+    public void Pay_EnoughAmount_ConfirmsBooking(double amount)
+    {
+        FakeBookingRepository repository = new();
+        BookingService service = NewService(repository, 250m, new SpyNotifier());
+        Booking booking = NewBooking(6);
+        booking.AddNight(new BookingNight("101", new DateOnly(2026, 11, 10), 250m));
+        repository.Add(booking);
+
+        service.Pay(6, (decimal)amount);
+
+        Assert.Equal(BookingStatus.Confirmed, booking.Status);
+    }
+
+    [Fact]
+    public void Pay_ConfirmedBooking_ThrowsPayableRule()
+    {
+        FakeBookingRepository repository = new();
+        BookingService service = NewService(repository, 250m, new SpyNotifier());
+        Booking booking = NewBooking(8);
+        booking.AddNight(new BookingNight("101", new DateOnly(2026, 11, 10), 250m));
+        booking.Confirm();
+        repository.Add(booking);
+
+        DomainRuleException ex = Assert.Throws<DomainRuleException>(
+            () => service.Pay(8, 250m));
+
+        Assert.Equal("booking.payable", ex.Rule);
+    }
+
+    [Fact]
+    public void Cancel_NewBooking_NotifiesWithReason()
+    {
+        FakeBookingRepository repository = new();
+        SpyNotifier notifier = new();
+        BookingService service = NewService(repository, 250m, notifier);
+        repository.Add(NewBooking(9));
+
+        service.Cancel(9, "гість передумав");
+
+        string message = Assert.Single(notifier.Messages);
+        Assert.Contains("скасовано: гість передумав", message);
+    }
+
+    [Fact]
+    public void Cancel_CheckedInBooking_ThrowsCancellableRule()
+    {
+        FakeBookingRepository repository = new();
+        BookingService service = NewService(repository, 250m, new SpyNotifier());
+        Booking booking = NewBooking(10);
+        booking.AddNight(new BookingNight("101", new DateOnly(2026, 11, 10), 250m));
+        booking.Confirm();
+        booking.CheckIn();
+        repository.Add(booking);
+
+        DomainRuleException ex = Assert.Throws<DomainRuleException>(
+            () => service.Cancel(10, "запізно"));
+
+        Assert.Equal("booking.cancellable", ex.Rule);
+    }
+
+    [Fact]
+    public void AddNight_NewBooking_AddsNight()
+    {
+        FakeBookingRepository repository = new();
+        BookingService service = NewService(repository, 250m, new SpyNotifier());
+        Booking booking = NewBooking(11);
+        repository.Add(booking);
+
+        service.AddNight(11, new BookingNight("101", new DateOnly(2026, 11, 10), 250m));
+
+        Assert.Single(booking.Nights);
+    }
+
+    [Fact]
+    public void AddNight_ConfirmedBooking_ThrowsEditableRule()
+    {
+        FakeBookingRepository repository = new();
+        BookingService service = NewService(repository, 250m, new SpyNotifier());
+        Booking booking = NewBooking(12);
+        booking.AddNight(new BookingNight("101", new DateOnly(2026, 11, 10), 250m));
+        booking.Confirm();
+        repository.Add(booking);
+        BookingNight night = new("101", new DateOnly(2026, 11, 11), 250m);
+
+        DomainRuleException ex = Assert.Throws<DomainRuleException>(
+            () => service.AddNight(12, night));
+
+        Assert.Equal("booking.editable", ex.Rule);
+    }
+
+    [Fact]
+    public void AddNight_SameNightTwice_ThrowsNightUniqueRule()
+    {
+        FakeBookingRepository repository = new();
+        BookingService service = NewService(repository, 250m, new SpyNotifier());
+        Booking booking = NewBooking(13);
+        booking.AddNight(new BookingNight("101", new DateOnly(2026, 11, 10), 250m));
+        repository.Add(booking);
+        BookingNight night = new("101", new DateOnly(2026, 11, 10), 250m);
+
+        DomainRuleException ex = Assert.Throws<DomainRuleException>(
+            () => service.AddNight(13, night));
+
+        Assert.Equal("booking.night-unique", ex.Rule);
+    }
+
+    [Fact]
+    public void Constructor_NullRepository_ThrowsArgumentNull()
+    {
+        StubPricingPolicy pricing = new(1m);
+        SpyNotifier notifier = new();
+        NullLogger<BookingService> log = NullLogger<BookingService>.Instance;
+
+        ArgumentNullException ex = Assert.Throws<ArgumentNullException>(
+            () => _ = new BookingService(null!, pricing, notifier, log));
+
+        Assert.Equal("repository", ex.ParamName);
+    }
+
     private static BookingService NewService(
         FakeBookingRepository repository, decimal price, SpyNotifier notifier) =>
         new(
