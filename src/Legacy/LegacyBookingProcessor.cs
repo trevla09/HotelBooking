@@ -8,7 +8,7 @@ public class Guest
     public int Id;
     public string Name = "";
     public string Email = "";
-    public string Kind = "regular";
+    public GuestKind Kind = GuestKind.Regular;
     public int StaysCount;
     public DateTime SinceUtc;
 }
@@ -29,15 +29,15 @@ public class LegacyBookingProcessor
 
     public string Handle(int bookingId, int guestId,
         string guestName, string? guestMail,
-        string guestKind, int guestStays,
-        List<RoomLine>? lines, string state,
+        GuestKind guestKind, int guestStays,
+        List<RoomLine>? lines, BookingState state,
         string currency, DateTime createdAt, bool sendMail)
     {
         if (lines != null)
         {
             if (lines.Count > 0)
             {
-                if (state == "new" || state == "paid")
+                if (state == BookingState.New || state == BookingState.Paid)
                 {
                     if (guestMail != null &&
                         guestMail.Contains("@"))
@@ -71,12 +71,12 @@ public class LegacyBookingProcessor
         }
 
         _tmpDiscount = 0m;
-        if (guestKind == "vip")
+        if (guestKind == GuestKind.Vip)
         {
             _tmpDiscount = _tmpSum * PricingRules.VipRate;
             if (_tmpDiscount > PricingRules.MaxDiscount) _tmpDiscount = PricingRules.MaxDiscount;
         }
-        else if (guestKind == "staff")
+        else if (guestKind == GuestKind.Staff)
         {
             _tmpDiscount = _tmpSum * PricingRules.StaffRate;
             if (_tmpDiscount > PricingRules.MaxDiscount) _tmpDiscount = PricingRules.MaxDiscount;
@@ -113,7 +113,7 @@ public class LegacyBookingProcessor
         return txt;
     }
 
-    public decimal Preview(string guestKind, int guestStays,
+    public decimal Preview(GuestKind guestKind, int guestStays,
         List<RoomLine> lines)
     {
         decimal s = 0m;
@@ -122,12 +122,12 @@ public class LegacyBookingProcessor
             s += it.Nights * it.Rate;
         }
         decimal d = 0m;
-        if (guestKind == "vip")
+        if (guestKind == GuestKind.Vip)
         {
             d = s * PricingRules.VipRate;
             if (d > PricingRules.MaxDiscount) d = PricingRules.MaxDiscount;
         }
-        else if (guestKind == "staff")
+        else if (guestKind == GuestKind.Staff)
         {
             d = s * PricingRules.StaffRate;
             if (d > PricingRules.MaxDiscount) d = PricingRules.MaxDiscount;
@@ -145,7 +145,7 @@ public class LegacyBookingProcessor
     public string DescribeGuest(Guest g)
     {
         string s = g.Name.Trim().ToUpper();
-        if (g.Kind == "vip") s += " [VIP]";
+        if (g.Kind == GuestKind.Vip) s += " [VIP]";
         if (g.StaysCount > PricingRules.LoyalStays) s += " [ЛОЯЛЬНИЙ]";
         s += " <" + g.Email.ToLower() + ">";
         int years = DateTime.Now.Year - g.SinceUtc.Year;
