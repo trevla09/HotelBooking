@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{32146791-F25
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Legacy", "src\Legacy\HotelBooking.Legacy.csproj", "{660EFD56-EB81-4ECB-A39A-4D30B704CD7A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A6742DA6-162D-43C0-AFE8-145A69929AAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking.Legacy.Tests", "tests\Legacy.Tests\HotelBooking.Legacy.Tests.csproj", "{77179694-7871-41B2-94A5-E51AF98625C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,8 +36,13 @@ Global
 		{660EFD56-EB81-4ECB-A39A-4D30B704CD7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{660EFD56-EB81-4ECB-A39A-4D30B704CD7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{660EFD56-EB81-4ECB-A39A-4D30B704CD7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77179694-7871-41B2-94A5-E51AF98625C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77179694-7871-41B2-94A5-E51AF98625C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77179694-7871-41B2-94A5-E51AF98625C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77179694-7871-41B2-94A5-E51AF98625C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{660EFD56-EB81-4ECB-A39A-4D30B704CD7A} = {32146791-F256-420A-B78F-0DC894A6037D}
+		{77179694-7871-41B2-94A5-E51AF98625C2} = {A6742DA6-162D-43C0-AFE8-145A69929AAD}
 	EndGlobalSection
 EndGlobal
