@@ -40,8 +40,6 @@ public class RoomLine
 
 public class BookingProcessor
 {
-    private decimal _tmpSum;
-    private decimal _tmpDiscount;
     private readonly List<string> _log = new();
 
     public string Handle(BookingRequest request)
@@ -52,15 +50,15 @@ public class BookingProcessor
 
         var lines = request.Lines!;
         var client = request.Client;
-        _tmpSum = Subtotal(lines);
-        _tmpDiscount = DiscountPolicy.For(_tmpSum, client.Kind, client.StaysCount);
-        decimal ship = ShippingPolicy.For(_tmpSum - _tmpDiscount);
-        decimal total = _tmpSum - _tmpDiscount + ship;
+        decimal subtotal = Subtotal(lines);
+        decimal discount = DiscountPolicy.For(subtotal, client.Kind, client.StaysCount);
+        decimal ship = ShippingPolicy.For(subtotal - discount);
+        decimal total = subtotal - discount + ship;
 
         string txt = new ReportBuilder(request.Currency)
             .Header(request.BookingId, client.Name)
             .Lines(lines)
-            .Row("Знижка", _tmpDiscount)
+            .Row("Знижка", discount)
             .Row("Доставка", ship)
             .Row("Разом", total)
             .Build();
