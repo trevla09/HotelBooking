@@ -62,23 +62,8 @@ public static class BookingTotalCalculator
     public static decimal VolumeDiscountOf(decimal amount)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(amount);
-        if (amount > PricingRules.LargeBookingFrom)
-        {
-            decimal discount = amount * PricingRules.LargeBookingRate;
-            if (discount > PricingRules.MaxVolumeDiscount)
-            {
-                discount = PricingRules.MaxVolumeDiscount;
-            }
-
-            return discount;
-        }
-
-        if (amount > PricingRules.MediumBookingFrom)
-        {
-            return amount * PricingRules.MediumBookingRate;
-        }
-
-        return 0m;
+        decimal discount = amount * VolumeRateOf(amount);
+        return Math.Min(discount, PricingRules.MaxVolumeDiscount);
     }
 
     /// <summary>Обчислює знижку за кодом купона.</summary>
@@ -135,5 +120,20 @@ public static class BookingTotalCalculator
         return current == BookingStatus.Confirmed
             ? BookingStatus.CheckedIn
             : current;
+    }
+
+    /// <summary>Обирає частку знижки за обсягом бронювання.</summary>
+    /// <param name="amount">Сума бронювання, грн.</param>
+    /// <returns>Частка знижки: 0, середня або велика.</returns>
+    private static decimal VolumeRateOf(decimal amount)
+    {
+        if (amount > PricingRules.LargeBookingFrom)
+        {
+            return PricingRules.LargeBookingRate;
+        }
+
+        return amount > PricingRules.MediumBookingFrom
+            ? PricingRules.MediumBookingRate
+            : 0m;
     }
 }

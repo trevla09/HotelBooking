@@ -13,6 +13,8 @@ public class VolumeDiscountOfTests
     [InlineData(5000, 250)]
     [InlineData(5000.01, 500.001)]
     [InlineData(8000, 800)]
+    [InlineData(10000, 1000)]
+    [InlineData(10000.01, 1000)]
     public void VolumeDiscountOf_Boundaries_MatchesTable(double amount, double expected)
     {
         decimal value = (decimal)amount;
