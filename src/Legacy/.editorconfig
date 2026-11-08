@@ -1,0 +1,11 @@
+# ЛР6: успадкований модуль не підпорядковується стандарту кодування проєкту
+# (див. Directory.Build.props у цій теці). root = true зупиняє успадкування
+# правил з кореневого .editorconfig.
+root = true
+
+[*.cs]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
