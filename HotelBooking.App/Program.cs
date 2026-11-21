@@ -1,28 +1,26 @@
-using System.Globalization;
 using System.Text;
 using HotelBooking.App;
-using HotelBooking.App.Input;
+using HotelBooking.App.Logging;
 using HotelBooking.Core;
-using HotelBooking.Core.Abstractions;
-using HotelBooking.Core.Bookings;
-using HotelBooking.Core.Domain;
-using HotelBooking.Core.Errors;
 using HotelBooking.Core.Infrastructure;
 using HotelBooking.Core.Pricing;
-using HotelBooking.Core.Reporting;
 using HotelBooking.Core.Services;
 using Microsoft.Extensions.Logging;
 
+// Композиційний корінь: єдине місце, де створюються конкретні реалізації
+// і де вирішується, звідки брати дані. Решта коду знає лише інтерфейси.
 Console.OutputEncoding = Encoding.UTF8;
+Console.InputEncoding = Encoding.UTF8;
 Console.WriteLine($"HotelBooking v{VersionInfo.Current()}");
+
+string dataFolder = args.Length > 0
+    ? args[0]
+    : Path.Combine(AppContext.BaseDirectory, "data");
+string logPath = Path.Combine(AppContext.BaseDirectory, "logs", "app.log");
 
 using ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
 {
-    builder.AddSimpleConsole(options =>
-    {
-        options.TimestampFormat = "HH:mm:ss ";
-        options.IncludeScopes = true;
-    });
+    builder.AddProvider(new FileLoggerProvider(logPath));
     builder.SetMinimumLevel(LogLevel.Debug);
 });
 ILogger log = loggerFactory.CreateLogger("HotelBooking.App");
@@ -30,146 +28,47 @@ ILogger log = loggerFactory.CreateLogger("HotelBooking.App");
 // Верхній обробник: єдине місце, де дозволено catch (Exception).
 try
 {
-    TotalRequest request = BuildSampleRequest();
-    TotalResult result = BookingTotalCalculator.Calculate(request);
-    string report = BookingReport.TextOf(request, result);
-    new BookingReportPrinter(Console.Out).Print(report);
+    var directory = new JsonHotelDirectory(
+        Path.Combine(dataFolder, "rooms.json"),
+        Path.Combine(dataFolder, "guests.json"));
+    var repository = new JsonBookingRepository(Path.Combine(dataFolder, "bookings.json"));
+    var clock = new SystemClock();
 
-    // ЛР4. Композиційний корінь: єдине місце, де створюються конкретні реалізації.
-    CultureInfo ukrainian = CultureInfo.GetCultureInfo("uk-UA");
-    var policies = new Dictionary<string, IPricingPolicy>
-    {
-        ["regular"] = new DiscountPricingPolicy(0.05m),
-        ["corporate"] = new CorporatePricingPolicy(),
-        ["staff"] = new DiscountPricingPolicy(0.30m),
-    };
-    string guestType = "regular";
-    IPricingPolicy pricing = policies.TryGetValue(guestType, out IPricingPolicy? found)
-        ? found
-        : new StandardPricingPolicy();
+    var services = new MenuServices(
+        new ReservationService(
+            repository,
+            directory,
+            clock,
+            loggerFactory.CreateLogger<ReservationService>()),
+        new BookingService(
+            repository,
+            new SeasonalPricingPolicy(),
+            new ConsoleNotifier(),
+            loggerFactory.CreateLogger<BookingService>()),
+        new BookingQueryService(repository, directory));
 
-    var repository = new InMemoryBookingRepository();
-    var service = new BookingService(
-        repository,
-        pricing,
-        new ConsoleNotifier(),
-        loggerFactory.CreateLogger<BookingService>());
-
-    var booking = new Booking(1, 100, DateTimeOffset.Now);
-    booking.AddNight(new BookingNight("101", new DateOnly(2026, 11, 10), 250m));
-    booking.AddNight(new BookingNight("101", new DateOnly(2026, 11, 11), 250m));
-    service.Place(booking);
-
-    Console.WriteLine(string.Format(ukrainian, "Сума: {0:0.00}", service.TotalOf(booking)));
-    Console.Write(BookingCsvReport.BuildCsv(repository.GetAll()));
-    var archived = new ArchivedBooking(booking, new DateOnly(2026, 11, 12));
-    Console.WriteLine($"В архіві: бронювання № {archived.Id}, ночей {archived.Nights.Count}");
-
-    // ЛР5. Введення ночей через барикаду: помилка вводу - пояснення й повторний запит.
-    const int InputBookingId = 2;
-    service.Place(new Booking(InputBookingId, 100, DateTimeOffset.Now));
+    log.LogInformation(
+        "Старт: {Rooms} номерів, {Guests} гостей, {Bookings} бронювань з {Folder}",
+        directory.Rooms.Count,
+        directory.Guests.Count,
+        repository.GetAll().Count,
+        dataFolder);
     Console.WriteLine(
-        $"Ночі для бронювання № {InputBookingId} (порожній номер кімнати - завершити).");
-    while (true)
-    {
-        Console.Write("Номер кімнати: ");
-        string? room = Console.ReadLine();
-        if (string.IsNullOrEmpty(room))
-        {
-            Console.WriteLine("Введення завершено.");
-            break;
-        }
+        $"Завантажено: {directory.Rooms.Count} номерів, {directory.Guests.Count} гостей, " +
+        $"{repository.GetAll().Count} бронювань. Журнал: {logPath}");
 
-        Console.Write("Дата (дд.мм.рррр): ");
-        string? date = Console.ReadLine();
-        Console.Write("Тариф, грн: ");
-        string? rate = Console.ReadLine();
-
-        Result<BookingNight> parsed = BookingNightParser.Parse(room, date, rate);
-        if (!parsed.IsSuccess)
-        {
-            Console.WriteLine($"Помилка вводу: {parsed.Error}");
-            continue;
-        }
-
-        try
-        {
-            service.AddNight(InputBookingId, parsed.Value!);
-            Console.WriteLine("Ніч додано.");
-        }
-        catch (DomainRuleException ex)
-        {
-            Console.WriteLine($"Не додано: {ex.Message}");
-        }
-    }
-
-    int validCount = BookingNightParser.CountValidNights(["3", "два", "0", "2"]);
-    Console.WriteLine($"Коректних кількостей ночей: {validCount}");
-
-    // using закриє файл аудиту навіть тоді, коли нижче буде кинуто виняток.
-    using FileAuditLog? audit = OpenAudit("audit.log", log);
-    service.Pay(1, 500m);
-    audit?.Write("Pay", 1);
-    service.Cancel(1, "гість змінив плани");
-    audit?.Write("Cancel", 1);
-    try
-    {
-        service.Cancel(1, "повторне скасування");
-    }
-    catch (DomainRuleException ex)
-    {
-        log.LogWarning("Правило {Rule}: {Message}", ex.Rule, ex.Message);
-    }
-
-    service.ExportReport(Path.Combine(Path.GetTempPath(), "booking-1.txt"), booking);
-    try
-    {
-        service.ExportReport(Path.Combine("немає-такої-теки", "booking-1.txt"), booking);
-    }
-    catch (IOException)
-    {
-        Console.WriteLine("Не вдалося зберегти звіт: тека недоступна.");
-    }
-
+    new ConsoleMenu(services, Console.In, Console.Out).Run();
     return 0;
 }
-catch (DomainRuleException ex)
+catch (Exception ex) when (ex is IOException or InvalidDataException)
 {
-    log.LogWarning("Правило {Rule}: {Message}", ex.Rule, ex.Message);
+    log.LogError(ex, "Дані недоступні");
+    Console.WriteLine($"Не вдалося прочитати дані: {ex.Message}");
     return 1;
 }
 catch (Exception ex)
 {
     log.LogCritical(ex, "Непередбачений збій");
+    Console.WriteLine("Непередбачена помилка, подробиці в журналі.");
     return 2;
-}
-
-static TotalRequest BuildSampleRequest()
-{
-    List<BookingLine> lines = new()
-    {
-        new() { RoomNumber = "101", Nights = 12, NightlyRate = 100m },
-        new() { RoomNumber = "204", Nights = 1, NightlyRate = 250m },
-    };
-    return new TotalRequest(
-        BookingId: 1,
-        Guest: new GuestInfo("Іваненко", "i@ex.com", true),
-        Lines: lines,
-        CreatedAt: new DateOnly(2026, 3, 10),
-        CouponCode: null,
-        Status: BookingStatus.New,
-        TransferPrice: 60m);
-}
-
-static FileAuditLog? OpenAudit(string path, ILogger log)
-{
-    try
-    {
-        return new FileAuditLog(path);
-    }
-    catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
-    {
-        log.LogWarning(ex, "Журнал аудиту {Path} недоступний, роботу продовжено", path);
-        return null;
-    }
 }
