@@ -69,21 +69,20 @@ public sealed class JsonBookingRepository : IBookingRepository
             return;
         }
 
-        List<BookingSnapshot>? snapshots;
         try
         {
-            snapshots = JsonSerializer.Deserialize<List<BookingSnapshot>>(
+            List<BookingSnapshot> snapshots = JsonSerializer.Deserialize<List<BookingSnapshot>>(
                 File.ReadAllText(_path),
-                _options);
+                _options) ?? new List<BookingSnapshot>();
+            foreach (BookingSnapshot snapshot in snapshots)
+            {
+                _memory.Add(Booking.Restore(snapshot));
+            }
         }
-        catch (JsonException ex)
+        catch (Exception ex)
+            when (ex is JsonException or ArgumentException or InvalidOperationException)
         {
             throw new InvalidDataException($"Файл {_path} пошкоджений: {ex.Message}", ex);
-        }
-
-        foreach (BookingSnapshot snapshot in snapshots ?? new List<BookingSnapshot>())
-        {
-            _memory.Add(Booking.Restore(snapshot));
         }
     }
 }

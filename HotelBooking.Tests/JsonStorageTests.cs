@@ -63,6 +63,25 @@ public class JsonStorageTests
     }
 
     [Fact]
+    public void Constructor_DuplicateNightInFile_ThrowsInvalidData()
+    {
+        string path = TempFile();
+        const string Night = "{\"roomNumber\":\"101\",\"date\":\"2026-06-10\",\"rate\":1000}";
+        File.WriteAllText(
+            path,
+            "[{\"id\":1,\"guestId\":1,\"createdAt\":\"2026-06-01T10:00:00+03:00\","
+                + "\"status\":\"New\",\"nights\":[" + Night + "," + Night + "]}]");
+        try
+        {
+            Assert.Throws<InvalidDataException>(() => new JsonBookingRepository(path));
+        }
+        finally
+        {
+            File.Delete(path);
+        }
+    }
+
+    [Fact]
     public void Directory_ReadsRoomsAndGuests()
     {
         string rooms = TempFile();
