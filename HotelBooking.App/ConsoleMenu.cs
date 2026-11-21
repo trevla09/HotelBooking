@@ -260,6 +260,7 @@ internal sealed class ConsoleMenu
 
     private Result<T> Retry<T>(Func<Result<T>> read)
     {
+        // TODO TD-02: форма перевіряється після введення всіх полів, а не після кожного.
         Result<T> result = read();
         for (int attempt = 1; !result.IsSuccess && attempt < MaxAttempts; attempt++)
         {

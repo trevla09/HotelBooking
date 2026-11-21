@@ -58,6 +58,7 @@ public sealed class JsonBookingRepository : IBookingRepository
     /// <inheritdoc/>
     public void Save()
     {
+        // TODO TD-04: файл переписується цілком; два процеси одночасно зіпсують дані.
         List<BookingSnapshot> snapshots = _bookings.Values
             .OrderBy(b => b.Id)
             .Select(b => b.ToSnapshot())

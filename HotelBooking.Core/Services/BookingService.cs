@@ -140,6 +140,7 @@ public sealed class BookingService
         decimal total = TotalOf(booking);
         if (amount < total)
         {
+            // TODO TD-03: суми в повідомленні форматуються поточною культурою, не uk-UA.
             throw new DomainRuleException(
                 "booking.amount", $"Сплачено {amount:0.00} грн, треба {total:0.00} грн");
         }
