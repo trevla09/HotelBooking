@@ -1,0 +1,482 @@
+[
+  {
+    "id": 1,
+    "fullName": "Наталія Гнатюк",
+    "email": "nataliia.hnatiuk1@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 2,
+    "fullName": "Ірина Ковальчук",
+    "email": "iryna.kovalchuk2@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 3,
+    "fullName": "Олена Павленко",
+    "email": "olena.pavlenko3@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 4,
+    "fullName": "Софія Гуменюк",
+    "email": "sofiia.humeniuk4@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 5,
+    "fullName": "Максим Руденко",
+    "email": "maksym.rudenko5@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 6,
+    "fullName": "Ірина Мороз",
+    "email": "iryna.moroz6@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 7,
+    "fullName": "Дмитро Литвин",
+    "email": "dmytro.lytvyn7@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 8,
+    "fullName": "Роман Лисенко",
+    "email": "roman.lysenko8@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 9,
+    "fullName": "Софія Лисенко",
+    "email": "sofiia.lysenko9@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 10,
+    "fullName": "Юрій Петренко",
+    "email": "iurii.petrenko10@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 11,
+    "fullName": "Наталія Гуменюк",
+    "email": "nataliia.humeniuk11@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 12,
+    "fullName": "Юрій Гуменюк",
+    "email": "iurii.humeniuk12@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 13,
+    "fullName": "Роман Ковальчук",
+    "email": "roman.kovalchuk13@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 14,
+    "fullName": "Олена Петренко",
+    "email": "olena.petrenko14@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 15,
+    "fullName": "Наталія Литвин",
+    "email": "nataliia.lytvyn15@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 16,
+    "fullName": "Андрій Петренко",
+    "email": "andrii.petrenko16@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 17,
+    "fullName": "Вікторія Гуменюк",
+    "email": "viktoriia.humeniuk17@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 18,
+    "fullName": "Оксана Гуменюк",
+    "email": "oksana.humeniuk18@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 19,
+    "fullName": "Марія Ковальчук",
+    "email": "mariia.kovalchuk19@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 20,
+    "fullName": "Вікторія Лисенко",
+    "email": "viktoriia.lysenko20@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 21,
+    "fullName": "Дмитро Мороз",
+    "email": "dmytro.moroz21@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 22,
+    "fullName": "Дмитро Захарчук",
+    "email": "dmytro.zakharchuk22@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 23,
+    "fullName": "Олена Ткаченко",
+    "email": "olena.tkachenko23@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 24,
+    "fullName": "Олена Олійник",
+    "email": "olena.oliinyk24@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 25,
+    "fullName": "Олег Гуменюк",
+    "email": "oleh.humeniuk25@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 26,
+    "fullName": "Оксана Коваль",
+    "email": "oksana.koval26@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 27,
+    "fullName": "Ірина Гуменюк",
+    "email": "iryna.humeniuk27@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 28,
+    "fullName": "Андрій Лисенко",
+    "email": "andrii.lysenko28@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 29,
+    "fullName": "Ірина Лисенко",
+    "email": "iryna.lysenko29@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 30,
+    "fullName": "Олена Руденко",
+    "email": "olena.rudenko30@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 31,
+    "fullName": "Олена Захарчук",
+    "email": "olena.zakharchuk31@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 32,
+    "fullName": "Наталія Шевчук",
+    "email": "nataliia.shevchuk32@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 33,
+    "fullName": "Оксана Кравець",
+    "email": "oksana.kravets33@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 34,
+    "fullName": "Юрій Руденко",
+    "email": "iurii.rudenko34@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 35,
+    "fullName": "Максим Захарчук",
+    "email": "maksym.zakharchuk35@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 36,
+    "fullName": "Марія Руденко",
+    "email": "mariia.rudenko36@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 37,
+    "fullName": "Максим Кравець",
+    "email": "maksym.kravets37@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 38,
+    "fullName": "Роман Коваль",
+    "email": "roman.koval38@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 39,
+    "fullName": "Роман Мельник",
+    "email": "roman.melnyk39@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 40,
+    "fullName": "Катерина Гнатюк",
+    "email": "kateryna.hnatiuk40@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 41,
+    "fullName": "Вікторія Ткаченко",
+    "email": "viktoriia.tkachenko41@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 42,
+    "fullName": "Максим Бондар",
+    "email": "maksym.bondar42@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 43,
+    "fullName": "Катерина Петренко",
+    "email": "kateryna.petrenko43@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 44,
+    "fullName": "Олег Гнатюк",
+    "email": "oleh.hnatiuk44@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 45,
+    "fullName": "Марія Коваль",
+    "email": "mariia.koval45@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 46,
+    "fullName": "Дмитро Лисенко",
+    "email": "dmytro.lysenko46@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 47,
+    "fullName": "Дмитро Руденко",
+    "email": "dmytro.rudenko47@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 48,
+    "fullName": "Наталія Ковальчук",
+    "email": "nataliia.kovalchuk48@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 49,
+    "fullName": "Роман Павленко",
+    "email": "roman.pavlenko49@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 50,
+    "fullName": "Андрій Гуменюк",
+    "email": "andrii.humeniuk50@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 51,
+    "fullName": "Ірина Савчук",
+    "email": "iryna.savchuk51@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 52,
+    "fullName": "Ірина Мельник",
+    "email": "iryna.melnyk52@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 53,
+    "fullName": "Дмитро Шевчук",
+    "email": "dmytro.shevchuk53@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 54,
+    "fullName": "Катерина Савчук",
+    "email": "kateryna.savchuk54@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 55,
+    "fullName": "Оксана Савчук",
+    "email": "oksana.savchuk55@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 56,
+    "fullName": "Роман Мороз",
+    "email": "roman.moroz56@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 57,
+    "fullName": "Оксана Ткаченко",
+    "email": "oksana.tkachenko57@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 58,
+    "fullName": "Олег Захарчук",
+    "email": "oleh.zakharchuk58@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 59,
+    "fullName": "Тарас Шевчук",
+    "email": "taras.shevchuk59@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 60,
+    "fullName": "Олег Петренко",
+    "email": "oleh.petrenko60@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 61,
+    "fullName": "Ірина Кравець",
+    "email": "iryna.kravets61@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 62,
+    "fullName": "Дмитро Кравець",
+    "email": "dmytro.kravets62@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 63,
+    "fullName": "Юрій Ковальчук",
+    "email": "iurii.kovalchuk63@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 64,
+    "fullName": "Марія Шевчук",
+    "email": "mariia.shevchuk64@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 65,
+    "fullName": "Олена Гуменюк",
+    "email": "olena.humeniuk65@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 66,
+    "fullName": "Роман Литвин",
+    "email": "roman.lytvyn66@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 67,
+    "fullName": "Максим Кушнір",
+    "email": "maksym.kushnir67@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 68,
+    "fullName": "Марія Лисенко",
+    "email": "mariia.lysenko68@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 69,
+    "fullName": "Максим Петренко",
+    "email": "maksym.petrenko69@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 70,
+    "fullName": "Богдан Руденко",
+    "email": "bohdan.rudenko70@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 71,
+    "fullName": "Софія Захарчук",
+    "email": "sofiia.zakharchuk71@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 72,
+    "fullName": "Андрій Кушнір",
+    "email": "andrii.kushnir72@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 73,
+    "fullName": "Юрій Павленко",
+    "email": "iurii.pavlenko73@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 74,
+    "fullName": "Софія Мороз",
+    "email": "sofiia.moroz74@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 75,
+    "fullName": "Наталія Захарчук",
+    "email": "nataliia.zakharchuk75@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 76,
+    "fullName": "Софія Руденко",
+    "email": "sofiia.rudenko76@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 77,
+    "fullName": "Роман Кушнір",
+    "email": "roman.kushnir77@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 78,
+    "fullName": "Тарас Марченко",
+    "email": "taras.marchenko78@example.com",
+    "isRegular": true
+  },
+  {
+    "id": 79,
+    "fullName": "Андрій Захарчук",
+    "email": "andrii.zakharchuk79@example.com",
+    "isRegular": false
+  },
+  {
+    "id": 80,
+    "fullName": "Оксана Олійник",
+    "email": "oksana.oliinyk80@example.com",
+    "isRegular": false
+  }
+]

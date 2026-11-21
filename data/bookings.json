@@ -1,0 +1,1312 @@
+[
+  {
+    "id": 1,
+    "guestId": 75,
+    "createdAt": "2026-11-13T12:00:00+02:00",
+    "status": "CheckedOut",
+    "nights": [
+      {
+        "roomNumber": "209",
+        "date": "2026-11-26",
+        "rate": 1000
+      },
+      {
+        "roomNumber": "209",
+        "date": "2026-11-27",
+        "rate": 1000
+      },
+      {
+        "roomNumber": "209",
+        "date": "2026-11-28",
+        "rate": 1000
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "guestId": 61,
+    "createdAt": "2026-11-02T12:00:00+02:00",
+    "status": "Cancelled",
+    "nights": [
+      {
+        "roomNumber": "102",
+        "date": "2026-11-12",
+        "rate": 1100
+      },
+      {
+        "roomNumber": "102",
+        "date": "2026-11-13",
+        "rate": 1100
+      },
+      {
+        "roomNumber": "102",
+        "date": "2026-11-14",
+        "rate": 1100
+      },
+      {
+        "roomNumber": "102",
+        "date": "2026-11-15",
+        "rate": 1100
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "guestId": 34,
+    "createdAt": "2026-11-18T12:00:00+02:00",
+    "status": "Confirmed",
+    "nights": [
+      {
+        "roomNumber": "301",
+        "date": "2026-11-26",
+        "rate": 1050
+      },
+      {
+        "roomNumber": "301",
+        "date": "2026-11-27",
+        "rate": 1050
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "guestId": 75,
+    "createdAt": "2026-11-14T12:00:00+02:00",
+    "status": "Cancelled",
+    "nights": [
+      {
+        "roomNumber": "402",
+        "date": "2026-11-18",
+        "rate": 2600
+      },
+      {
+        "roomNumber": "402",
+        "date": "2026-11-19",
+        "rate": 2600
+      },
+      {
+        "roomNumber": "402",
+        "date": "2026-11-20",
+        "rate": 2600
+      },
+      {
+        "roomNumber": "402",
+        "date": "2026-11-21",
+        "rate": 2600
+      },
+      {
+        "roomNumber": "402",
+        "date": "2026-11-22",
+        "rate": 2600
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "guestId": 75,
+    "createdAt": "2026-11-08T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "101",
+        "date": "2026-11-16",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "101",
+        "date": "2026-11-17",
+        "rate": 2150
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "guestId": 71,
+    "createdAt": "2026-11-13T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "202",
+        "date": "2026-11-26",
+        "rate": 2600
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "guestId": 7,
+    "createdAt": "2026-11-07T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "202",
+        "date": "2026-11-23",
+        "rate": 2600
+      },
+      {
+        "roomNumber": "202",
+        "date": "2026-11-24",
+        "rate": 2600
+      },
+      {
+        "roomNumber": "202",
+        "date": "2026-11-25",
+        "rate": 2600
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "guestId": 70,
+    "createdAt": "2026-11-14T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "409",
+        "date": "2026-11-20",
+        "rate": 2100
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "guestId": 16,
+    "createdAt": "2026-11-17T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "309",
+        "date": "2026-11-25",
+        "rate": 2500
+      },
+      {
+        "roomNumber": "309",
+        "date": "2026-11-26",
+        "rate": 2500
+      },
+      {
+        "roomNumber": "309",
+        "date": "2026-11-27",
+        "rate": 2500
+      },
+      {
+        "roomNumber": "309",
+        "date": "2026-11-28",
+        "rate": 2500
+      },
+      {
+        "roomNumber": "309",
+        "date": "2026-11-29",
+        "rate": 2500
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "guestId": 49,
+    "createdAt": "2026-11-05T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "308",
+        "date": "2026-11-15",
+        "rate": 1700
+      },
+      {
+        "roomNumber": "308",
+        "date": "2026-11-16",
+        "rate": 1700
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "guestId": 76,
+    "createdAt": "2026-11-15T12:00:00+02:00",
+    "status": "Confirmed",
+    "nights": [
+      {
+        "roomNumber": "107",
+        "date": "2026-11-17",
+        "rate": 1050
+      },
+      {
+        "roomNumber": "107",
+        "date": "2026-11-18",
+        "rate": 1050
+      },
+      {
+        "roomNumber": "107",
+        "date": "2026-11-19",
+        "rate": 1050
+      },
+      {
+        "roomNumber": "107",
+        "date": "2026-11-20",
+        "rate": 1050
+      },
+      {
+        "roomNumber": "107",
+        "date": "2026-11-21",
+        "rate": 1050
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "guestId": 34,
+    "createdAt": "2026-11-04T12:00:00+02:00",
+    "status": "CheckedOut",
+    "nights": [
+      {
+        "roomNumber": "206",
+        "date": "2026-11-13",
+        "rate": 1600
+      },
+      {
+        "roomNumber": "206",
+        "date": "2026-11-14",
+        "rate": 1600
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "guestId": 19,
+    "createdAt": "2026-11-30T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "310",
+        "date": "2026-12-19",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "310",
+        "date": "2026-12-20",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "310",
+        "date": "2026-12-21",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "310",
+        "date": "2026-12-22",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "310",
+        "date": "2026-12-23",
+        "rate": 2150
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "guestId": 16,
+    "createdAt": "2026-10-31T12:00:00+02:00",
+    "status": "Confirmed",
+    "nights": [
+      {
+        "roomNumber": "202",
+        "date": "2026-11-15",
+        "rate": 2600
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "guestId": 3,
+    "createdAt": "2026-10-25T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "405",
+        "date": "2026-11-09",
+        "rate": 2200
+      },
+      {
+        "roomNumber": "405",
+        "date": "2026-11-10",
+        "rate": 2200
+      },
+      {
+        "roomNumber": "405",
+        "date": "2026-11-11",
+        "rate": 2200
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "guestId": 46,
+    "createdAt": "2026-11-12T12:00:00+02:00",
+    "status": "Confirmed",
+    "nights": [
+      {
+        "roomNumber": "406",
+        "date": "2026-11-26",
+        "rate": 2100
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "guestId": 53,
+    "createdAt": "2026-11-19T12:00:00+02:00",
+    "status": "Confirmed",
+    "nights": [
+      {
+        "roomNumber": "104",
+        "date": "2026-11-30",
+        "rate": 1650
+      },
+      {
+        "roomNumber": "104",
+        "date": "2026-12-01",
+        "rate": 1650
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "guestId": 75,
+    "createdAt": "2026-12-12T12:00:00+02:00",
+    "status": "Cancelled",
+    "nights": [
+      {
+        "roomNumber": "306",
+        "date": "2026-12-18",
+        "rate": 1000
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "guestId": 12,
+    "createdAt": "2026-12-09T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "303",
+        "date": "2026-12-19",
+        "rate": 1600
+      },
+      {
+        "roomNumber": "303",
+        "date": "2026-12-20",
+        "rate": 1600
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "guestId": 57,
+    "createdAt": "2026-11-02T12:00:00+02:00",
+    "status": "Confirmed",
+    "nights": [
+      {
+        "roomNumber": "102",
+        "date": "2026-11-17",
+        "rate": 1100
+      },
+      {
+        "roomNumber": "102",
+        "date": "2026-11-18",
+        "rate": 1100
+      },
+      {
+        "roomNumber": "102",
+        "date": "2026-11-19",
+        "rate": 1100
+      },
+      {
+        "roomNumber": "102",
+        "date": "2026-11-20",
+        "rate": 1100
+      },
+      {
+        "roomNumber": "102",
+        "date": "2026-11-21",
+        "rate": 1100
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "guestId": 62,
+    "createdAt": "2026-10-31T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "110",
+        "date": "2026-11-13",
+        "rate": 2550
+      },
+      {
+        "roomNumber": "110",
+        "date": "2026-11-14",
+        "rate": 2550
+      },
+      {
+        "roomNumber": "110",
+        "date": "2026-11-15",
+        "rate": 2550
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "guestId": 70,
+    "createdAt": "2026-10-24T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "104",
+        "date": "2026-11-13",
+        "rate": 1650
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "guestId": 52,
+    "createdAt": "2026-11-27T12:00:00+02:00",
+    "status": "Cancelled",
+    "nights": [
+      {
+        "roomNumber": "308",
+        "date": "2026-12-02",
+        "rate": 1700
+      },
+      {
+        "roomNumber": "308",
+        "date": "2026-12-03",
+        "rate": 1700
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "guestId": 6,
+    "createdAt": "2026-11-25T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "109",
+        "date": "2026-12-09",
+        "rate": 1600
+      },
+      {
+        "roomNumber": "109",
+        "date": "2026-12-10",
+        "rate": 1600
+      },
+      {
+        "roomNumber": "109",
+        "date": "2026-12-11",
+        "rate": 1600
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "guestId": 12,
+    "createdAt": "2026-10-27T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "205",
+        "date": "2026-11-15",
+        "rate": 1200
+      },
+      {
+        "roomNumber": "205",
+        "date": "2026-11-16",
+        "rate": 1200
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "guestId": 16,
+    "createdAt": "2026-12-02T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "404",
+        "date": "2026-12-06",
+        "rate": 2550
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "guestId": 40,
+    "createdAt": "2026-11-25T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "107",
+        "date": "2026-12-02",
+        "rate": 1050
+      },
+      {
+        "roomNumber": "107",
+        "date": "2026-12-03",
+        "rate": 1050
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "guestId": 5,
+    "createdAt": "2026-12-13T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "207",
+        "date": "2026-12-15",
+        "rate": 2550
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "guestId": 13,
+    "createdAt": "2026-11-05T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "302",
+        "date": "2026-11-09",
+        "rate": 1200
+      },
+      {
+        "roomNumber": "302",
+        "date": "2026-11-10",
+        "rate": 1200
+      },
+      {
+        "roomNumber": "302",
+        "date": "2026-11-11",
+        "rate": 1200
+      },
+      {
+        "roomNumber": "302",
+        "date": "2026-11-12",
+        "rate": 1200
+      },
+      {
+        "roomNumber": "302",
+        "date": "2026-11-13",
+        "rate": 1200
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "guestId": 37,
+    "createdAt": "2026-11-28T12:00:00+02:00",
+    "status": "CheckedOut",
+    "nights": [
+      {
+        "roomNumber": "110",
+        "date": "2026-12-11",
+        "rate": 2550
+      },
+      {
+        "roomNumber": "110",
+        "date": "2026-12-12",
+        "rate": 2550
+      },
+      {
+        "roomNumber": "110",
+        "date": "2026-12-13",
+        "rate": 2550
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "guestId": 46,
+    "createdAt": "2026-11-28T12:00:00+02:00",
+    "status": "Confirmed",
+    "nights": [
+      {
+        "roomNumber": "202",
+        "date": "2026-12-11",
+        "rate": 2600
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "guestId": 38,
+    "createdAt": "2026-10-28T12:00:00+02:00",
+    "status": "Cancelled",
+    "nights": [
+      {
+        "roomNumber": "403",
+        "date": "2026-11-10",
+        "rate": 2500
+      },
+      {
+        "roomNumber": "403",
+        "date": "2026-11-11",
+        "rate": 2500
+      },
+      {
+        "roomNumber": "403",
+        "date": "2026-11-12",
+        "rate": 2500
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "guestId": 40,
+    "createdAt": "2026-11-08T12:00:00+02:00",
+    "status": "CheckedOut",
+    "nights": [
+      {
+        "roomNumber": "306",
+        "date": "2026-11-09",
+        "rate": 1000
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "guestId": 51,
+    "createdAt": "2026-11-12T12:00:00+02:00",
+    "status": "CheckedOut",
+    "nights": [
+      {
+        "roomNumber": "305",
+        "date": "2026-11-29",
+        "rate": 2200
+      },
+      {
+        "roomNumber": "305",
+        "date": "2026-11-30",
+        "rate": 2200
+      },
+      {
+        "roomNumber": "305",
+        "date": "2026-12-01",
+        "rate": 2200
+      },
+      {
+        "roomNumber": "305",
+        "date": "2026-12-02",
+        "rate": 2200
+      },
+      {
+        "roomNumber": "305",
+        "date": "2026-12-03",
+        "rate": 2200
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "guestId": 79,
+    "createdAt": "2026-11-02T12:00:00+02:00",
+    "status": "Cancelled",
+    "nights": [
+      {
+        "roomNumber": "201",
+        "date": "2026-11-15",
+        "rate": 1650
+      },
+      {
+        "roomNumber": "201",
+        "date": "2026-11-16",
+        "rate": 1650
+      },
+      {
+        "roomNumber": "201",
+        "date": "2026-11-17",
+        "rate": 1650
+      },
+      {
+        "roomNumber": "201",
+        "date": "2026-11-18",
+        "rate": 1650
+      },
+      {
+        "roomNumber": "201",
+        "date": "2026-11-19",
+        "rate": 1650
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "guestId": 64,
+    "createdAt": "2026-12-01T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "406",
+        "date": "2026-12-02",
+        "rate": 2100
+      },
+      {
+        "roomNumber": "406",
+        "date": "2026-12-03",
+        "rate": 2100
+      }
+    ]
+  },
+  {
+    "id": 37,
+    "guestId": 55,
+    "createdAt": "2026-11-16T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "210",
+        "date": "2026-11-17",
+        "rate": 1150
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "guestId": 7,
+    "createdAt": "2026-11-20T12:00:00+02:00",
+    "status": "CheckedOut",
+    "nights": [
+      {
+        "roomNumber": "408",
+        "date": "2026-11-30",
+        "rate": 2200
+      },
+      {
+        "roomNumber": "408",
+        "date": "2026-12-01",
+        "rate": 2200
+      },
+      {
+        "roomNumber": "408",
+        "date": "2026-12-02",
+        "rate": 2200
+      },
+      {
+        "roomNumber": "408",
+        "date": "2026-12-03",
+        "rate": 2200
+      }
+    ]
+  },
+  {
+    "id": 39,
+    "guestId": 77,
+    "createdAt": "2026-11-10T12:00:00+02:00",
+    "status": "Confirmed",
+    "nights": [
+      {
+        "roomNumber": "204",
+        "date": "2026-11-22",
+        "rate": 1050
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "guestId": 59,
+    "createdAt": "2026-11-26T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "110",
+        "date": "2026-12-07",
+        "rate": 2550
+      },
+      {
+        "roomNumber": "110",
+        "date": "2026-12-08",
+        "rate": 2550
+      },
+      {
+        "roomNumber": "110",
+        "date": "2026-12-09",
+        "rate": 2550
+      }
+    ]
+  },
+  {
+    "id": 41,
+    "guestId": 56,
+    "createdAt": "2026-11-11T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "408",
+        "date": "2026-11-12",
+        "rate": 2200
+      },
+      {
+        "roomNumber": "408",
+        "date": "2026-11-13",
+        "rate": 2200
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "guestId": 56,
+    "createdAt": "2026-12-03T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "404",
+        "date": "2026-12-13",
+        "rate": 2550
+      }
+    ]
+  },
+  {
+    "id": 43,
+    "guestId": 61,
+    "createdAt": "2026-11-14T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "101",
+        "date": "2026-12-01",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "101",
+        "date": "2026-12-02",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "101",
+        "date": "2026-12-03",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "101",
+        "date": "2026-12-04",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "101",
+        "date": "2026-12-05",
+        "rate": 2150
+      }
+    ]
+  },
+  {
+    "id": 44,
+    "guestId": 60,
+    "createdAt": "2026-11-02T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "405",
+        "date": "2026-11-18",
+        "rate": 2200
+      },
+      {
+        "roomNumber": "405",
+        "date": "2026-11-19",
+        "rate": 2200
+      }
+    ]
+  },
+  {
+    "id": 45,
+    "guestId": 16,
+    "createdAt": "2026-11-24T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "101",
+        "date": "2026-12-12",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "101",
+        "date": "2026-12-13",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "101",
+        "date": "2026-12-14",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "101",
+        "date": "2026-12-15",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "101",
+        "date": "2026-12-16",
+        "rate": 2150
+      }
+    ]
+  },
+  {
+    "id": 46,
+    "guestId": 34,
+    "createdAt": "2026-11-18T12:00:00+02:00",
+    "status": "Cancelled",
+    "nights": [
+      {
+        "roomNumber": "403",
+        "date": "2026-11-30",
+        "rate": 2500
+      },
+      {
+        "roomNumber": "403",
+        "date": "2026-12-01",
+        "rate": 2500
+      },
+      {
+        "roomNumber": "403",
+        "date": "2026-12-02",
+        "rate": 2500
+      },
+      {
+        "roomNumber": "403",
+        "date": "2026-12-03",
+        "rate": 2500
+      }
+    ]
+  },
+  {
+    "id": 47,
+    "guestId": 77,
+    "createdAt": "2026-11-14T12:00:00+02:00",
+    "status": "CheckedOut",
+    "nights": [
+      {
+        "roomNumber": "308",
+        "date": "2026-12-04",
+        "rate": 1700
+      },
+      {
+        "roomNumber": "308",
+        "date": "2026-12-05",
+        "rate": 1700
+      },
+      {
+        "roomNumber": "308",
+        "date": "2026-12-06",
+        "rate": 1700
+      }
+    ]
+  },
+  {
+    "id": 48,
+    "guestId": 33,
+    "createdAt": "2026-10-28T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "303",
+        "date": "2026-11-09",
+        "rate": 1600
+      },
+      {
+        "roomNumber": "303",
+        "date": "2026-11-10",
+        "rate": 1600
+      },
+      {
+        "roomNumber": "303",
+        "date": "2026-11-11",
+        "rate": 1600
+      }
+    ]
+  },
+  {
+    "id": 49,
+    "guestId": 59,
+    "createdAt": "2026-11-18T12:00:00+02:00",
+    "status": "Cancelled",
+    "nights": [
+      {
+        "roomNumber": "108",
+        "date": "2026-11-26",
+        "rate": 1200
+      },
+      {
+        "roomNumber": "108",
+        "date": "2026-11-27",
+        "rate": 1200
+      }
+    ]
+  },
+  {
+    "id": 50,
+    "guestId": 12,
+    "createdAt": "2026-11-16T12:00:00+02:00",
+    "status": "CheckedOut",
+    "nights": [
+      {
+        "roomNumber": "307",
+        "date": "2026-11-24",
+        "rate": 1150
+      },
+      {
+        "roomNumber": "307",
+        "date": "2026-11-25",
+        "rate": 1150
+      }
+    ]
+  },
+  {
+    "id": 51,
+    "guestId": 21,
+    "createdAt": "2026-11-15T12:00:00+02:00",
+    "status": "Cancelled",
+    "nights": [
+      {
+        "roomNumber": "206",
+        "date": "2026-12-02",
+        "rate": 1600
+      },
+      {
+        "roomNumber": "206",
+        "date": "2026-12-03",
+        "rate": 1600
+      },
+      {
+        "roomNumber": "206",
+        "date": "2026-12-04",
+        "rate": 1600
+      },
+      {
+        "roomNumber": "206",
+        "date": "2026-12-05",
+        "rate": 1600
+      },
+      {
+        "roomNumber": "206",
+        "date": "2026-12-06",
+        "rate": 1600
+      }
+    ]
+  },
+  {
+    "id": 52,
+    "guestId": 47,
+    "createdAt": "2026-11-10T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "108",
+        "date": "2026-11-17",
+        "rate": 1200
+      },
+      {
+        "roomNumber": "108",
+        "date": "2026-11-18",
+        "rate": 1200
+      },
+      {
+        "roomNumber": "108",
+        "date": "2026-11-19",
+        "rate": 1200
+      },
+      {
+        "roomNumber": "108",
+        "date": "2026-11-20",
+        "rate": 1200
+      }
+    ]
+  },
+  {
+    "id": 53,
+    "guestId": 46,
+    "createdAt": "2026-11-07T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "409",
+        "date": "2026-11-11",
+        "rate": 2100
+      },
+      {
+        "roomNumber": "409",
+        "date": "2026-11-12",
+        "rate": 2100
+      },
+      {
+        "roomNumber": "409",
+        "date": "2026-11-13",
+        "rate": 2100
+      },
+      {
+        "roomNumber": "409",
+        "date": "2026-11-14",
+        "rate": 2100
+      }
+    ]
+  },
+  {
+    "id": 54,
+    "guestId": 37,
+    "createdAt": "2026-11-02T12:00:00+02:00",
+    "status": "CheckedIn",
+    "nights": [
+      {
+        "roomNumber": "409",
+        "date": "2026-11-17",
+        "rate": 2100
+      }
+    ]
+  },
+  {
+    "id": 55,
+    "guestId": 58,
+    "createdAt": "2026-11-26T12:00:00+02:00",
+    "status": "CheckedOut",
+    "nights": [
+      {
+        "roomNumber": "304",
+        "date": "2026-12-15",
+        "rate": 2550
+      }
+    ]
+  },
+  {
+    "id": 56,
+    "guestId": 72,
+    "createdAt": "2026-11-09T12:00:00+02:00",
+    "status": "Confirmed",
+    "nights": [
+      {
+        "roomNumber": "103",
+        "date": "2026-11-21",
+        "rate": 1100
+      },
+      {
+        "roomNumber": "103",
+        "date": "2026-11-22",
+        "rate": 1100
+      },
+      {
+        "roomNumber": "103",
+        "date": "2026-11-23",
+        "rate": 1100
+      }
+    ]
+  },
+  {
+    "id": 57,
+    "guestId": 63,
+    "createdAt": "2026-11-03T12:00:00+02:00",
+    "status": "Confirmed",
+    "nights": [
+      {
+        "roomNumber": "204",
+        "date": "2026-11-09",
+        "rate": 1050
+      },
+      {
+        "roomNumber": "204",
+        "date": "2026-11-10",
+        "rate": 1050
+      }
+    ]
+  },
+  {
+    "id": 58,
+    "guestId": 24,
+    "createdAt": "2026-12-12T12:00:00+02:00",
+    "status": "Cancelled",
+    "nights": [
+      {
+        "roomNumber": "105",
+        "date": "2026-12-16",
+        "rate": 2600
+      },
+      {
+        "roomNumber": "105",
+        "date": "2026-12-17",
+        "rate": 2600
+      },
+      {
+        "roomNumber": "105",
+        "date": "2026-12-18",
+        "rate": 2600
+      },
+      {
+        "roomNumber": "105",
+        "date": "2026-12-19",
+        "rate": 2600
+      }
+    ]
+  },
+  {
+    "id": 59,
+    "guestId": 70,
+    "createdAt": "2026-10-30T12:00:00+02:00",
+    "status": "New",
+    "nights": [
+      {
+        "roomNumber": "108",
+        "date": "2026-11-12",
+        "rate": 1200
+      },
+      {
+        "roomNumber": "108",
+        "date": "2026-11-13",
+        "rate": 1200
+      },
+      {
+        "roomNumber": "108",
+        "date": "2026-11-14",
+        "rate": 1200
+      },
+      {
+        "roomNumber": "108",
+        "date": "2026-11-15",
+        "rate": 1200
+      },
+      {
+        "roomNumber": "108",
+        "date": "2026-11-16",
+        "rate": 1200
+      }
+    ]
+  },
+  {
+    "id": 60,
+    "guestId": 7,
+    "createdAt": "2026-11-17T12:00:00+02:00",
+    "status": "Confirmed",
+    "nights": [
+      {
+        "roomNumber": "410",
+        "date": "2026-11-24",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "410",
+        "date": "2026-11-25",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "410",
+        "date": "2026-11-26",
+        "rate": 2150
+      },
+      {
+        "roomNumber": "410",
+        "date": "2026-11-27",
+        "rate": 2150
+      }
+    ]
+  }
+]

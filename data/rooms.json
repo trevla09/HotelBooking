@@ -1,0 +1,242 @@
+[
+  {
+    "number": "101",
+    "category": "Family",
+    "capacity": 4,
+    "baseRate": 2150
+  },
+  {
+    "number": "102",
+    "category": "Standard",
+    "capacity": 2,
+    "baseRate": 1100
+  },
+  {
+    "number": "103",
+    "category": "Standard",
+    "capacity": 2,
+    "baseRate": 1100
+  },
+  {
+    "number": "104",
+    "category": "Comfort",
+    "capacity": 3,
+    "baseRate": 1650
+  },
+  {
+    "number": "105",
+    "category": "Lux",
+    "capacity": 2,
+    "baseRate": 2600
+  },
+  {
+    "number": "106",
+    "category": "Family",
+    "capacity": 4,
+    "baseRate": 2100
+  },
+  {
+    "number": "107",
+    "category": "Standard",
+    "capacity": 2,
+    "baseRate": 1050
+  },
+  {
+    "number": "108",
+    "category": "Standard",
+    "capacity": 2,
+    "baseRate": 1200
+  },
+  {
+    "number": "109",
+    "category": "Comfort",
+    "capacity": 3,
+    "baseRate": 1600
+  },
+  {
+    "number": "110",
+    "category": "Lux",
+    "capacity": 2,
+    "baseRate": 2550
+  },
+  {
+    "number": "201",
+    "category": "Comfort",
+    "capacity": 3,
+    "baseRate": 1650
+  },
+  {
+    "number": "202",
+    "category": "Lux",
+    "capacity": 2,
+    "baseRate": 2600
+  },
+  {
+    "number": "203",
+    "category": "Family",
+    "capacity": 4,
+    "baseRate": 2100
+  },
+  {
+    "number": "204",
+    "category": "Standard",
+    "capacity": 2,
+    "baseRate": 1050
+  },
+  {
+    "number": "205",
+    "category": "Standard",
+    "capacity": 2,
+    "baseRate": 1200
+  },
+  {
+    "number": "206",
+    "category": "Comfort",
+    "capacity": 3,
+    "baseRate": 1600
+  },
+  {
+    "number": "207",
+    "category": "Lux",
+    "capacity": 2,
+    "baseRate": 2550
+  },
+  {
+    "number": "208",
+    "category": "Family",
+    "capacity": 4,
+    "baseRate": 2200
+  },
+  {
+    "number": "209",
+    "category": "Standard",
+    "capacity": 2,
+    "baseRate": 1000
+  },
+  {
+    "number": "210",
+    "category": "Standard",
+    "capacity": 2,
+    "baseRate": 1150
+  },
+  {
+    "number": "301",
+    "category": "Standard",
+    "capacity": 2,
+    "baseRate": 1050
+  },
+  {
+    "number": "302",
+    "category": "Standard",
+    "capacity": 2,
+    "baseRate": 1200
+  },
+  {
+    "number": "303",
+    "category": "Comfort",
+    "capacity": 3,
+    "baseRate": 1600
+  },
+  {
+    "number": "304",
+    "category": "Lux",
+    "capacity": 2,
+    "baseRate": 2550
+  },
+  {
+    "number": "305",
+    "category": "Family",
+    "capacity": 4,
+    "baseRate": 2200
+  },
+  {
+    "number": "306",
+    "category": "Standard",
+    "capacity": 2,
+    "baseRate": 1000
+  },
+  {
+    "number": "307",
+    "category": "Standard",
+    "capacity": 2,
+    "baseRate": 1150
+  },
+  {
+    "number": "308",
+    "category": "Comfort",
+    "capacity": 3,
+    "baseRate": 1700
+  },
+  {
+    "number": "309",
+    "category": "Lux",
+    "capacity": 2,
+    "baseRate": 2500
+  },
+  {
+    "number": "310",
+    "category": "Family",
+    "capacity": 4,
+    "baseRate": 2150
+  },
+  {
+    "number": "401",
+    "category": "Lux",
+    "capacity": 2,
+    "baseRate": 2550
+  },
+  {
+    "number": "402",
+    "category": "Lux",
+    "capacity": 2,
+    "baseRate": 2600
+  },
+  {
+    "number": "403",
+    "category": "Lux",
+    "capacity": 2,
+    "baseRate": 2500
+  },
+  {
+    "number": "404",
+    "category": "Lux",
+    "capacity": 2,
+    "baseRate": 2550
+  },
+  {
+    "number": "405",
+    "category": "Family",
+    "capacity": 4,
+    "baseRate": 2200
+  },
+  {
+    "number": "406",
+    "category": "Family",
+    "capacity": 4,
+    "baseRate": 2100
+  },
+  {
+    "number": "407",
+    "category": "Family",
+    "capacity": 4,
+    "baseRate": 2150
+  },
+  {
+    "number": "408",
+    "category": "Family",
+    "capacity": 4,
+    "baseRate": 2200
+  },
+  {
+    "number": "409",
+    "category": "Family",
+    "capacity": 4,
+    "baseRate": 2100
+  },
+  {
+    "number": "410",
+    "category": "Family",
+    "capacity": 4,
+    "baseRate": 2150
+  }
+]
