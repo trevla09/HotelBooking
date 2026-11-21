@@ -67,10 +67,9 @@ public class JsonStorageTests
     {
         string path = TempFile();
         const string Night = "{\"roomNumber\":\"101\",\"date\":\"2026-06-10\",\"rate\":1000}";
-        File.WriteAllText(
-            path,
-            "[{\"id\":1,\"guestId\":1,\"createdAt\":\"2026-06-01T10:00:00+03:00\","
-                + "\"status\":\"New\",\"nights\":[" + Night + "," + Night + "]}]");
+        string json = "[{\"id\":1,\"guestId\":1,\"createdAt\":\"2026-06-01T10:00:00+03:00\","
+            + "\"status\":\"New\",\"nights\":[" + Night + "," + Night + "]}]";
+        File.WriteAllText(path, json);
         try
         {
             Assert.Throws<InvalidDataException>(() => new JsonBookingRepository(path));

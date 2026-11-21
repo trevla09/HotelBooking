@@ -72,7 +72,7 @@ public class ReservationInputParserTests
     [Fact]
     public void ParseSearch_AllEmpty_AsksForCriterion()
     {
-        Result<BookingSearch> result = ReservationInputParser.ParseSearch(" ", null, "");
+        Result<BookingSearch> result = ReservationInputParser.ParseSearch(" ", null, string.Empty);
 
         Assert.False(result.IsSuccess);
         Assert.Contains("хоча б одну", result.Error);
