@@ -57,8 +57,8 @@ reportgenerator -reports:HotelBooking.Tests/coverage.cobertura.xml -targetdir:co
 
 Покриття рахується за `HotelBooking.Core` без теки `Infrastructure` і за
 `HotelBooking.App.Input` (межу задано в `HotelBooking.Tests.csproj`, властивості
-`Include` і `Exclude`). Поточне значення: рядкове XX,X %, за гілками XX,X %.
-Тестових випадків - 178.
+`Include` і `Exclude`). Поточне значення: рядкове 95,6 % (831 з 869 рядків), за гілками 92,7 % (229 з 247).
+Тестових випадків - 184.
 
 Те саме, що перевіряє конвеєр, локально однією командою:
 
