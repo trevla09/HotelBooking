@@ -7,7 +7,7 @@ namespace HotelBooking.Core.Infrastructure;
 
 /// <summary>
 /// Сховище бронювань у JSON-файлі. Читає файл один раз при створенні,
-/// далі працює з пам'яттю і переписує файл цілком у <see cref="Save"/>.
+/// далі працює зі сховищем у пам'яті і переписує файл цілком у <see cref="Save"/>.
 /// </summary>
 public sealed class JsonBookingRepository : IBookingRepository
 {
@@ -19,7 +19,7 @@ public sealed class JsonBookingRepository : IBookingRepository
         Converters = { new JsonStringEnumConverter() },
     };
 
-    private readonly Dictionary<int, Booking> _bookings = new();
+    private readonly InMemoryBookingRepository _memory = new();
 
     /// <summary>Створює сховище і завантажує бронювання з файлу, якщо він є.</summary>
     /// <param name="path">Шлях до JSON-файлу.</param>
@@ -33,36 +33,22 @@ public sealed class JsonBookingRepository : IBookingRepository
     }
 
     /// <inheritdoc/>
-    /// <exception cref="ArgumentNullException">Бронювання не задано.</exception>
-    /// <exception cref="InvalidOperationException">Бронювання з таким Id уже є.</exception>
-    public void Add(Booking booking)
-    {
-        ArgumentNullException.ThrowIfNull(booking);
-        if (!_bookings.TryAdd(booking.Id, booking))
-        {
-            throw new InvalidOperationException(
-                $"Бронювання № {booking.Id} уже є у сховищі.");
-        }
-    }
+    public void Add(Booking booking) => _memory.Add(booking);
 
     /// <inheritdoc/>
-    public Booking? GetById(int id) =>
-        _bookings.TryGetValue(id, out Booking? booking) ? booking : null;
+    public Booking? GetById(int id) => _memory.GetById(id);
 
     /// <inheritdoc/>
-    public IReadOnlyList<Booking> GetAll() => _bookings.Values.OrderBy(b => b.Id).ToList();
+    public IReadOnlyList<Booking> GetAll() => _memory.GetAll().OrderBy(b => b.Id).ToList();
 
     /// <inheritdoc/>
-    public int NextId() => _bookings.Count == 0 ? 1 : _bookings.Keys.Max() + 1;
+    public int NextId() => _memory.NextId();
 
     /// <inheritdoc/>
     public void Save()
     {
         // TODO TD-04: файл переписується цілком; два процеси одночасно зіпсують дані.
-        List<BookingSnapshot> snapshots = _bookings.Values
-            .OrderBy(b => b.Id)
-            .Select(b => b.ToSnapshot())
-            .ToList();
+        List<BookingSnapshot> snapshots = GetAll().Select(b => b.ToSnapshot()).ToList();
 
         string? folder = Path.GetDirectoryName(Path.GetFullPath(_path));
         if (!string.IsNullOrEmpty(folder))
@@ -97,7 +83,7 @@ public sealed class JsonBookingRepository : IBookingRepository
 
         foreach (BookingSnapshot snapshot in snapshots ?? new List<BookingSnapshot>())
         {
-            Add(Booking.Restore(snapshot));
+            _memory.Add(Booking.Restore(snapshot));
         }
     }
 }
