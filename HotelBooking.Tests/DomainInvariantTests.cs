@@ -1,8 +1,8 @@
 using HotelBooking.Core.Abstractions;
 using HotelBooking.Core.Domain;
+using HotelBooking.Core.Infrastructure;
 using HotelBooking.Core.Pricing;
 using HotelBooking.Core.Services;
-using HotelBooking.Core.Storage;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 

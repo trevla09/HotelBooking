@@ -1,5 +1,5 @@
 using HotelBooking.Core.Domain;
-using HotelBooking.Core.Storage;
+using HotelBooking.Core.Infrastructure;
 using Xunit;
 
 namespace HotelBooking.Tests;

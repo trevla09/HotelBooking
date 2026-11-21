@@ -1,7 +1,7 @@
 using HotelBooking.Core.Abstractions;
 using HotelBooking.Core.Domain;
 
-namespace HotelBooking.Core.Storage;
+namespace HotelBooking.Core.Infrastructure;
 
 /// <summary>Сховище бронювань у пам'яті на словнику.</summary>
 public sealed class InMemoryBookingRepository : IBookingRepository
