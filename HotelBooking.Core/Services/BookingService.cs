@@ -40,6 +40,7 @@ public sealed class BookingService
     {
         ArgumentNullException.ThrowIfNull(booking);
         _repository.Add(booking);
+        _repository.Save();
         _notifier.Notify(string.Format(
             CultureInfo.InvariantCulture,
             "Бронювання № {0} прийнято, сума {1:0.00} грн",
@@ -78,6 +79,7 @@ public sealed class BookingService
                 ex);
         }
 
+        _repository.Save();
         _log.LogInformation("Додано ніч {Date} у номері {Room}", night.Date, night.RoomNumber);
     }
 
@@ -106,14 +108,15 @@ public sealed class BookingService
         }
         catch (InvalidOperationException ex)
         {
-            _log.LogError(ex, "Скасування не виконано, стан {Status}", booking.Status);
+            _log.LogWarning("UC-02 скасування відхилено, стан {Status}", booking.Status);
             throw new DomainRuleException(
                 "booking.cancellable",
                 $"Бронювання № {bookingId} у стані {booking.Status} скасувати не можна",
                 ex);
         }
 
-        _log.LogInformation("Скасовано, причина {Reason}", reason);
+        _repository.Save();
+        _log.LogInformation("UC-02 скасовано, причина {Reason}", reason);
         _notifier.Notify($"Бронювання № {bookingId} скасовано: {reason}");
     }
 
@@ -129,6 +132,7 @@ public sealed class BookingService
         Booking booking = Load(bookingId);
         if (booking.Status != BookingStatus.New)
         {
+            _log.LogWarning("UC-03 оплату відхилено, стан {Status}", booking.Status);
             throw new DomainRuleException(
                 "booking.payable", $"Стан {booking.Status} не дозволяє оплату");
         }
@@ -146,7 +150,55 @@ public sealed class BookingService
         }
 
         booking.Confirm();
-        _log.LogInformation("Оплачено на {Amount} грн", amount);
+        _repository.Save();
+        _log.LogInformation("UC-03 оплачено на {Amount} грн", amount);
+    }
+
+    /// <summary>Заселяє гостя за оплаченим бронюванням (UC-02).</summary>
+    /// <param name="bookingId">Номер бронювання.</param>
+    /// <exception cref="DomainRuleException">
+    /// Бронювання немає або воно не у стані Confirmed.</exception>
+    public void CheckIn(int bookingId)
+    {
+        using IDisposable? scope = _log.BeginScope("UC-02 Booking:{BookingId}", bookingId);
+        Booking booking = Load(bookingId);
+        if (booking.Status != BookingStatus.Confirmed)
+        {
+            _log.LogWarning("UC-02 заселення відхилено, стан {Status}", booking.Status);
+            string hint = booking.Status == BookingStatus.New
+                ? "спершу оплатіть"
+                : "заселення неможливе";
+            throw new DomainRuleException(
+                "booking.check-in",
+                $"Бронювання № {bookingId} у стані {booking.Status}: {hint}");
+        }
+
+        booking.CheckIn();
+        _repository.Save();
+        _log.LogInformation("UC-02 гостя заселено");
+    }
+
+    /// <summary>Виселяє заселеного гостя (UC-04).</summary>
+    /// <param name="bookingId">Номер бронювання.</param>
+    /// <returns>Вартість проживання за політикою цін, грн.</returns>
+    /// <exception cref="DomainRuleException">
+    /// Бронювання немає або гість не заселений.</exception>
+    public decimal CheckOut(int bookingId)
+    {
+        using IDisposable? scope = _log.BeginScope("UC-04 Booking:{BookingId}", bookingId);
+        Booking booking = Load(bookingId);
+        if (booking.Status != BookingStatus.CheckedIn)
+        {
+            _log.LogWarning("UC-04 виселення відхилено, стан {Status}", booking.Status);
+            throw new DomainRuleException(
+                "booking.check-out",
+                $"Бронювання № {bookingId} у стані {booking.Status}: гість не заселений");
+        }
+
+        booking.CheckOut();
+        _repository.Save();
+        _log.LogInformation("UC-04 гостя виселено");
+        return TotalOf(booking);
     }
 
     /// <summary>
