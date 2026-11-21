@@ -9,14 +9,12 @@ namespace HotelBooking.Core.Pricing;
 /// </summary>
 public sealed class SeasonalPricingPolicy : IPricingPolicy
 {
-    private const int MoneyDecimals = 2;
-
     /// <inheritdoc/>
     /// <exception cref="ArgumentNullException">Ніч не задано.</exception>
     public decimal PriceOf(BookingNight night)
     {
         ArgumentNullException.ThrowIfNull(night);
         decimal factor = SeasonCalendar.FactorOf(SeasonCalendar.SeasonOf(night.Date));
-        return Math.Round(night.Rate * factor, MoneyDecimals, MidpointRounding.AwayFromZero);
+        return Math.Round(night.Rate * factor, Money.Decimals, MidpointRounding.AwayFromZero);
     }
 }

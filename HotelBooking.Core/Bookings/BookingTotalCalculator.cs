@@ -19,7 +19,7 @@ public static class BookingTotalCalculator
         total += TransferFeeOf(total, request.TransferPrice);
         total = request.Status == BookingStatus.Cancelled
             ? 0m
-            : Math.Round(Math.Max(total, 0m), 2);
+            : Math.Round(Math.Max(total, 0m), Money.Decimals);
         return new TotalResult(total, NextStatusOf(request.Status, total));
     }
 

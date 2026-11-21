@@ -24,6 +24,6 @@ public sealed class DiscountPricingPolicy : IPricingPolicy
     public decimal PriceOf(BookingNight night)
     {
         ArgumentNullException.ThrowIfNull(night);
-        return Math.Round(night.Rate * (1m - _rate), 2);
+        return Math.Round(night.Rate * (1m - _rate), Money.Decimals);
     }
 }

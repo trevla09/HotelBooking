@@ -12,6 +12,6 @@ public sealed class CorporatePricingPolicy : IPricingPolicy
     public decimal PriceOf(BookingNight night)
     {
         ArgumentNullException.ThrowIfNull(night);
-        return Math.Round(night.Rate * CorporateFactor, 2);
+        return Math.Round(night.Rate * CorporateFactor, Money.Decimals);
     }
 }
