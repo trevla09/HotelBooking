@@ -10,6 +10,7 @@ internal sealed class FileLoggerProvider : ILoggerProvider
 {
     private readonly StreamWriter _writer;
     private readonly object _gate = new();
+    private readonly AsyncLocal<LogScope?> _scope = new();
     private bool _disposed;
 
     /// <summary>Відкриває файл журналу для дописування, створює теку за потреби.</summary>
@@ -44,6 +45,15 @@ internal sealed class FileLoggerProvider : ILoggerProvider
             _disposed = true;
         }
     }
+
+    /// <summary>Відкриває область журналу для всіх логерів цього постачальника.</summary>
+    /// <param name="text">Текст області.</param>
+    /// <returns>Область; Dispose її закриває.</returns>
+    internal LogScope PushScope(string text) => new(_scope, text);
+
+    /// <summary>Описує відкриті області.</summary>
+    /// <returns>Ланцюжок областей або порожній рядок.</returns>
+    internal string DescribeScope() => _scope.Value?.Chain() ?? string.Empty;
 
     /// <summary>Дописує готовий рядок у файл.</summary>
     /// <param name="line">Рядок журналу.</param>
