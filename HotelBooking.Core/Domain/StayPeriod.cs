@@ -54,7 +54,7 @@ public sealed record StayPeriod
     public bool Overlaps(StayPeriod other)
     {
         ArgumentNullException.ThrowIfNull(other);
-        return CheckIn < other.CheckOut && other.CheckIn < CheckOut;
+          return CheckIn < other.CheckOut   && other.CheckIn < CheckOut;
     }
 
     /// <summary>Перелічує дати всіх ночей періоду за зростанням.</summary>
