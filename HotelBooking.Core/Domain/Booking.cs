@@ -118,7 +118,7 @@ public sealed class Booking
     /// <summary>Перевіряє, чи займає бронювання номер хоча б на одну ніч періоду.</summary>
     /// <param name="roomNumber">Номер кімнати.</param>
     /// <param name="period">Період [заїзд; виїзд).</param>
-    /// <returns>true, якщо бронювання не скасоване і має ніч у цьому номері в межах періоду.</returns>
+    /// <returns>true, якщо бронювання не скасоване і має ніч у номері в межах періоду.</returns>
     /// <exception cref="ArgumentNullException">Період не задано.</exception>
     public bool Occupies(string roomNumber, StayPeriod period)
     {

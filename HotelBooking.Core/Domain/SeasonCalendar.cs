@@ -1,6 +1,6 @@
 namespace HotelBooking.Core.Domain;
 
-/// <summary>Календар сезонів готелю: дата ночі - сезон - коефіцієнт (spec.md, таблиця 4.1).</summary>
+/// <summary>Календар сезонів: дата ночі - сезон - коефіцієнт (spec.md, таблиця 4.1).</summary>
 public static class SeasonCalendar
 {
     /// <summary>Коефіцієнт низького сезону.</summary>

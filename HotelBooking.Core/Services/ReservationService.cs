@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HotelBooking.Core.Services;
 
-/// <summary>Сценарій UC-01 «Забронювати номер»: перевірка вільного номера і створення бронювання.</summary>
+/// <summary>Сценарій UC-01 «Забронювати номер»: перевірка вільного номера і бронювання.</summary>
 public sealed class ReservationService
 {
     /// <summary>Найбільша кількість ночей в одному бронюванні.</summary>
