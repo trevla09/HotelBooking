@@ -15,7 +15,7 @@
 
   <!-- ЛР8: семантична версія збірки й відомості про продукт -->
   <PropertyGroup>
-    <VersionPrefix>0.8.0</VersionPrefix>
+    <VersionPrefix>1.0.0</VersionPrefix>
     <Authors>Тимофій Ізюменко</Authors>
     <Product>HotelBooking</Product>
   </PropertyGroup>
