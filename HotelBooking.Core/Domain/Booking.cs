@@ -36,6 +36,26 @@ public sealed class Booking
     /// <summary>Ночі, що входять до бронювання. Додати ніч можна лише через AddNight.</summary>
     public IReadOnlyList<BookingNight> Nights => _nights;
 
+    /// <summary>Чи займає бронювання номери: будь-який стан, крім скасованого.</summary>
+    public bool IsActive => Status != BookingStatus.Cancelled;
+
+    /// <summary>Відновлює бронювання зі знімка стану. Використовується сховищем.</summary>
+    /// <param name="snapshot">Збережений знімок.</param>
+    /// <returns>Бронювання з тими самими ночами і станом.</returns>
+    /// <exception cref="ArgumentNullException">Знімок не задано.</exception>
+    public static Booking Restore(BookingSnapshot snapshot)
+    {
+        ArgumentNullException.ThrowIfNull(snapshot);
+        Booking booking = new(snapshot.Id, snapshot.GuestId, snapshot.CreatedAt);
+        foreach (BookingNight night in snapshot.Nights)
+        {
+            booking.AddNight(night);
+        }
+
+        booking.Status = snapshot.Status;
+        return booking;
+    }
+
     /// <summary>Додає ніч до нового бронювання.</summary>
     /// <param name="night">Ніч, яку треба додати.</param>
     /// <exception cref="ArgumentNullException">Ніч не задано.</exception>
@@ -94,6 +114,23 @@ public sealed class Booking
 
         Status = BookingStatus.Cancelled;
     }
+
+    /// <summary>Перевіряє, чи займає бронювання номер хоча б на одну ніч періоду.</summary>
+    /// <param name="roomNumber">Номер кімнати.</param>
+    /// <param name="period">Період [заїзд; виїзд).</param>
+    /// <returns>true, якщо бронювання не скасоване і має ніч у цьому номері в межах періоду.</returns>
+    /// <exception cref="ArgumentNullException">Період не задано.</exception>
+    public bool Occupies(string roomNumber, StayPeriod period)
+    {
+        ArgumentNullException.ThrowIfNull(period);
+        return IsActive
+            && _nights.Exists(n => n.RoomNumber == roomNumber && period.Contains(n.Date));
+    }
+
+    /// <summary>Створює знімок стану для збереження. Не змінює стан.</summary>
+    /// <returns>Знімок з копією списку ночей.</returns>
+    public BookingSnapshot ToSnapshot() =>
+        new(Id, GuestId, CreatedAt, Status, _nights.ToList());
 
     /// <summary>Обчислює базову вартість бронювання без знижок. Не змінює стан.</summary>
     /// <returns>Сума тарифів усіх ночей, грн.</returns>
