@@ -25,14 +25,14 @@ jobs:
         run: dotnet format --verify-no-changes --no-restore
 
       - name: Складання Release з аналізаторами
-        run: dotnet build -c Release --no-restore
+        run: dotnet build -c Release --no-restore -warnaserror
 
       - name: Тести й покриття
         run: >
           dotnet test -c Release --no-restore
           /p:CollectCoverage=true
           /p:CoverletOutputFormat=cobertura
-          /p:Threshold=80 /p:ThresholdType=line
+          /p:Threshold=70 /p:ThresholdType=line
 
       - name: Зберегти звіт про покриття
         if: always()

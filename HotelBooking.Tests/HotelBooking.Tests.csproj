@@ -5,6 +5,8 @@
     <IsTestProject>true</IsTestProject>
     <!-- Поріг покриття рахуємо за ядром і барикадою вводу; Program.cs - лише композиція. -->
     <Include>[HotelBooking.Core]*,[HotelBooking.App]HotelBooking.App.Input.*</Include>
+    <!-- Інфраструктура працює з файлами; її перевіряють інтеграційні тести, а не поріг. -->
+    <Exclude>[HotelBooking.Core]HotelBooking.Core.Infrastructure.*</Exclude>
   </PropertyGroup>
 
   <ItemGroup>
