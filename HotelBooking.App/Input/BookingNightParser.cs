@@ -20,37 +20,14 @@ internal static class BookingNightParser
     /// <returns>Ніч проживання або пояснення помилки.</returns>
     public static Result<BookingNight> Parse(string? roomNumber, string? date, string? rate)
     {
-        CultureInfo ukrainian = CultureInfo.GetCultureInfo("uk-UA");
-        string room = roomNumber?.Trim() ?? string.Empty;
-        if (room.Length == 0 || room.Length > MaxRoomNumberLength)
-        {
-            return Result<BookingNight>.Fail(string.Format(
-                CultureInfo.InvariantCulture,
-                "Номер кімнати - від 1 до {0} символів",
-                MaxRoomNumberLength));
-        }
+        string? roomError = CheckRoom(roomNumber, out string room);
+        string? dateError = CheckDate(date, out DateOnly day);
+        string? rateError = CheckRate(rate, out decimal price);
+        string? error = roomError ?? dateError ?? rateError;
 
-        if (!DateOnly.TryParseExact(
-            date,
-            "dd.MM.yyyy",
-            CultureInfo.InvariantCulture,
-            DateTimeStyles.None,
-            out DateOnly day))
-        {
-            return Result<BookingNight>.Fail("Дата - у форматі дд.мм.рррр, наприклад 10.11.2026");
-        }
-
-        if (!decimal.TryParse(rate, NumberStyles.Number, ukrainian, out decimal price)
-            || price < 0m
-            || price > MaxRate)
-        {
-            return Result<BookingNight>.Fail(string.Format(
-                ukrainian,
-                "Тариф - число від 0 до {0:N0}, наприклад 250,50",
-                MaxRate));
-        }
-
-        return Result<BookingNight>.Ok(new BookingNight(room, day, price));
+        return error is null
+            ? Result<BookingNight>.Ok(new BookingNight(room, day, price))
+            : Result<BookingNight>.Fail(error);
     }
 
     /// <summary>Рахує рядки з коректною кількістю ночей (ціле число більше 0).</summary>
@@ -71,5 +48,53 @@ internal static class BookingNightParser
         }
 
         return valid;
+    }
+
+    /// <summary>Перевіряє номер кімнати.</summary>
+    /// <param name="input">Введений рядок.</param>
+    /// <param name="room">Номер без пробілів по краях.</param>
+    /// <returns>Пояснення помилки або null.</returns>
+    internal static string? CheckRoom(string? input, out string room)
+    {
+        room = input?.Trim() ?? string.Empty;
+        if (room.Length == 0 || room.Length > MaxRoomNumberLength)
+        {
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                "Номер кімнати - від 1 до {0} символів",
+                MaxRoomNumberLength);
+        }
+
+        return null;
+    }
+
+    /// <summary>Перевіряє дату у форматі дд.мм.рррр.</summary>
+    /// <param name="input">Введений рядок.</param>
+    /// <param name="day">Розібрана дата.</param>
+    /// <returns>Пояснення помилки або null.</returns>
+    internal static string? CheckDate(string? input, out DateOnly day)
+    {
+        bool ok = DateOnly.TryParseExact(
+            input?.Trim(),
+            "dd.MM.yyyy",
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out day);
+        return ok ? null : "Дата - у форматі дд.мм.рррр, наприклад 10.11.2026";
+    }
+
+    private static string? CheckRate(string? input, out decimal price)
+    {
+        CultureInfo ukrainian = CultureInfo.GetCultureInfo("uk-UA");
+        bool ok = decimal.TryParse(input, NumberStyles.Number, ukrainian, out price);
+        if (!ok || price < 0m || price > MaxRate)
+        {
+            return string.Format(
+                ukrainian,
+                "Тариф - число від 0 до {0:N0}, наприклад 250,50",
+                MaxRate);
+        }
+
+        return null;
     }
 }
