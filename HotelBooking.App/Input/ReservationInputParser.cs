@@ -11,9 +11,6 @@ namespace HotelBooking.App.Input;
 /// </summary>
 internal static class ReservationInputParser
 {
-    /// <summary>Найбільша кількість ночей, яку приймає форма.</summary>
-    private const int MaxNights = 30;
-
     /// <summary>Розбирає запит на бронювання.</summary>
     /// <param name="guestId">Ідентифікатор гостя.</param>
     /// <param name="roomNumber">Номер кімнати.</param>
@@ -132,12 +129,12 @@ internal static class ReservationInputParser
             NumberStyles.None,
             CultureInfo.InvariantCulture,
             out nights);
-        if (!ok || nights < 1 || nights > MaxNights)
+        if (!ok || nights < 1 || nights > ReservationService.MaxNights)
         {
             return string.Format(
                 CultureInfo.InvariantCulture,
                 "Кількість ночей - від 1 до {0}",
-                MaxNights);
+                ReservationService.MaxNights);
         }
 
         return null;
