@@ -27,4 +27,13 @@ public sealed class InMemoryBookingRepository : IBookingRepository
 
     /// <inheritdoc/>
     public IReadOnlyList<Booking> GetAll() => _bookings.Values.ToList();
+
+    /// <inheritdoc/>
+    public int NextId() => _bookings.Count == 0 ? 1 : _bookings.Keys.Max() + 1;
+
+    /// <inheritdoc/>
+    public void Save()
+    {
+        // Дані живуть лише в пам'яті процесу, фіксувати нічого.
+    }
 }

@@ -9,6 +9,8 @@ internal sealed class FakeBookingRepository : IBookingRepository
 
     public int AddCalls { get; private set; }
 
+    public int SaveCalls { get; private set; }
+
     public void Add(Booking booking)
     {
         _items[booking.Id] = booking;
@@ -19,4 +21,8 @@ internal sealed class FakeBookingRepository : IBookingRepository
         _items.TryGetValue(id, out Booking? found) ? found : null;
 
     public IReadOnlyList<Booking> GetAll() => _items.Values.ToList();
+
+    public int NextId() => _items.Count == 0 ? 1 : _items.Keys.Max() + 1;
+
+    public void Save() => SaveCalls++;
 }

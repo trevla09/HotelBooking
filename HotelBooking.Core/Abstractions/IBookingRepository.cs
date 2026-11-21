@@ -17,4 +17,11 @@ public interface IBookingRepository
     /// <summary>Повертає всі бронювання.</summary>
     /// <returns>Знімок усіх бронювань.</returns>
     IReadOnlyList<Booking> GetAll();
+
+    /// <summary>Повертає наступний вільний ідентифікатор бронювання.</summary>
+    /// <returns>Ідентифікатор, більший за всі наявні; 1 для порожнього сховища.</returns>
+    int NextId();
+
+    /// <summary>Фіксує зміни бронювань у постійному сховищі.</summary>
+    void Save();
 }
