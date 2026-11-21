@@ -2,64 +2,85 @@
 
 ![CI](https://github.com/trevla09/HotelBooking/actions/workflows/ci.yml/badge.svg)
 
-Навчальний проєкт з дисципліни «Конструювання програмного забезпечення».
-Варіант № 8: бронювання номерів у готелі.
+Консольний застосунок адміністратора готелю: бронює номери на період, рахує ціну
+ночі за сезоном, веде бронювання від створення до виселення і показує
+заповнюваність за тиждень.
 
-## Склад рішення
+## Автор і варіант
 
-- HotelBooking.Core — логіка предметної області (бібліотека класів)
-- HotelBooking.App — консольний застосунок (введення, виведення)
-- HotelBooking.Tests — модульні тести (xUnit)
+Ізюменко Тимофій Романович, група 471, варіант № 8 (HotelBooking).
+Дисципліна «Конструювання програмного забезпечення», самостійна робота № 3.
 
-## Вимоги
+## Швидкий старт
 
-.NET SDK 8.0 (версію закріплено в `global.json`), Git.
-
-## Складання та запуск
+Потрібен .NET SDK 8.0 (версію закріплено в `global.json`) і Git.
 
 ```
-dotnet build
-dotnet run --project HotelBooking.App
+git clone https://github.com/trevla09/HotelBooking.git
+dotnet build HotelBooking
+dotnet run --project HotelBooking/HotelBooking.App
 ```
 
-## Стандарт кодування
+Дані (40 номерів, 80 умовних гостей, 60 бронювань) лежать у теці `data` і
+копіюються поруч із виконуваним файлом при складанні.
 
-Правила (версія 2.0.0) описано у файлі [CODING_STANDARD.md](CODING_STANDARD.md) і закріплено
-в `.editorconfig` та `Directory.Build.props`. Чекліст огляду і журнал рішень - у `docs/standard/`.
+## Структура рішення
 
-Перевірка перед комітом:
+- `HotelBooking.Core` - бібліотека логіки: домен (`Domain`), сервіси сценаріїв
+  (`Services`), політики ціни (`Pricing`), звіт (`Reporting`), інтерфейси
+  (`Abstractions`) і JSON-сховища (`Infrastructure`).
+- `HotelBooking.App` - консольне меню, барикада вводу (`Input`), журнал у файл
+  (`Logging`) і композиційний корінь `Program.cs`.
+- `HotelBooking.Tests` - модульні тести xUnit з ручними дублерами: фейкове сховище,
+  фейковий довідник, фіксований годинник.
+
+Шари і правило залежностей описано в [docs/architecture.md](docs/architecture.md).
+
+## Можливості
+
+Сценарії детально описано в [docs/spec.md](docs/spec.md), прохідні приклади - у
+[docs/user-guide.md](docs/user-guide.md).
+
+- UC-01 Забронювати номер: перевірка вільності за напіввідкритим інтервалом `[заїзд; виїзд)`.
+- UC-02 Заселити або скасувати бронювання.
+- UC-03 Оплатити бронювання (сума за сезонними коефіцієнтами 1,00 / 1,20 / 1,50 / 1,80).
+- UC-04 Виселити гостя з підсумком.
+- UC-05 Знайти бронювання за частиною імені, датою ночі і станом.
+- UC-06 Звіт «Заповнюваність за тиждень».
+
+## Тести і покриття
 
 ```
-dotnet format --verify-no-changes
-dotnet build -c Release
-dotnet test
+dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+reportgenerator -reports:HotelBooking.Tests/coverage.cobertura.xml -targetdir:coverage-report
 ```
 
-## Автор
+Покриття рахується за `HotelBooking.Core` без теки `Infrastructure` і за
+`HotelBooking.App.Input` (межу задано в `HotelBooking.Tests.csproj`, властивості
+`Include` і `Exclude`). Поточне значення: рядкове XX,X %, за гілками XX,X %.
+Тестових випадків - 178.
 
-Ізюменко Тимофій, група 471
+Те саме, що перевіряє конвеєр, локально однією командою:
 
-## Обробка помилок (ЛР5)
+```
+dotnet format --verify-no-changes && dotnet build -c Release -warnaserror && dotnet test -c Release /p:CollectCoverage=true /p:Threshold=70 /p:ThresholdType=line
+```
 
-Класифікація помилок - у `docs/errors.md`. Барикада проходить між консоллю
-і ядром: рядки розбирає `HotelBooking.App/Input/BookingNightParser` і повертає
-`Result<BookingNight>`, а ядро приймає лише типізовані значення. Порушення
-правил предметної області - `DomainRuleException` з ідентифікатором правила.
-Журнал пише `ILogger` (Microsoft.Extensions.Logging), аудит операцій -
-файл `audit.log` (у Git не потрапляє).
+Конвеєр `.github/workflows/ci.yml` запускається на push у будь-яку гілку і на pull
+request у `main`: формат, складання з `-warnaserror`, тести, поріг 70 %,
+публікація `coverage.cobertura.xml` як артефакту.
 
-## Безперервна інтеграція (ЛР8)
+## Технології
 
-Конвеєр `.github/workflows/ci.yml` запускається на кожен push у `main` і `feature/**`
-та на кожен pull request у `main`. Зміна потрапляє в `main` лише тоді, коли пройдено
-всі критерії якості:
+.NET 8, C# 12, xUnit 2.6, coverlet, аналізатори Roslyn (CA, IDE) і StyleCop.Analyzers,
+System.Text.Json, Microsoft.Extensions.Logging, GitHub Actions.
 
-| Крок | Команда | Що ламає збірку |
-|---|---|---|
-| Формат | `dotnet format --verify-no-changes` | зайвий пробіл, відступ, кодування файла |
-| Складання | `dotnet build -c Release` | будь-яке попередження CS, CA, IDE, SA |
-| Тести | `dotnet test -c Release` | хоча б один червоний тест |
-| Покриття | `/p:Threshold=80` | покриття рядків нижче за 80 % |
+## Обмеження і відомий борг
 
-Версія збірки задається у `Directory.Build.props` (`VersionPrefix`) і виводиться першим
-рядком застосунку. Під час restore працює NuGetAudit: вразливий пакет ламає складання.
+Програма розрахована на одного адміністратора: якщо запустити два екземпляри з
+однією текою `data`, вони перезапишуть зміни один одного (TD-04). Бронювання займає
+один номер; кілька номерів в одному бронюванні модель дозволяє, але меню такого
+не вміє. Ціна рахується щоразу за поточною таблицею сезонів, тож зміна коефіцієнта
+змінить суму вже створених неоплачених бронювань. У `Core` лишився код
+лабораторних ЛР1-ЛР7, який меню не використовує (TD-01). Повний реєстр боргу - у
+[docs/self-check.md](docs/self-check.md), рішення - у [docs/decisions.md](docs/decisions.md).
