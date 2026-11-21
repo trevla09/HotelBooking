@@ -44,7 +44,7 @@ public class StayPeriodTests
         Assert.Equal(3, period.Nights);
         Assert.Equal(new DateOnly(2027, 1, 2), period.CheckOut);
         Assert.Equal(
-            [new DateOnly(2026, 12, 30), new DateOnly(2026, 12, 31), new DateOnly(2027, 1, 1)],
+            new[] { new DateOnly(2026, 12, 30), new(2026, 12, 31), new(2027, 1, 1) },
             period.EachNight());
     }
 
