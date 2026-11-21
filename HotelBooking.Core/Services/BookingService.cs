@@ -246,6 +246,7 @@ public sealed class BookingService
         }
 
         booking.Confirm();
+        _repository.Save();
         _log.LogInformation("Оплачено на {Amount} грн", amount);
         return Result<decimal>.Ok(total);
     }

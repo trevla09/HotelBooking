@@ -4,9 +4,9 @@ using System.Runtime.InteropServices;
 using HotelBooking.Bench;
 using HotelBooking.Core.Domain;
 using HotelBooking.Core.Errors;
+using HotelBooking.Core.Infrastructure;
 using HotelBooking.Core.Pricing;
 using HotelBooking.Core.Services;
-using HotelBooking.Core.Storage;
 using Microsoft.Extensions.Logging.Abstractions;
 
 // Семінар 2, тема 4. 100 000 невдалих оплат (правило booking.amount):
