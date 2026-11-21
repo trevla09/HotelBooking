@@ -149,6 +149,54 @@ public sealed class BookingService
         _log.LogInformation("Оплачено на {Amount} грн", amount);
     }
 
+    /// <summary>
+    /// Оплачує нове бронювання і підтверджує його. Порушення правила
+    /// повертає як результат, а не кидає виняток (семінар 2, тема 4).
+    /// </summary>
+    /// <param name="bookingId">Номер бронювання.</param>
+    /// <param name="amount">Сплачена сума, грн.</param>
+    /// <returns>
+    /// Вартість бронювання в разі успіху або помилка з кодом
+    /// booking.exists, booking.payable чи booking.amount.
+    /// </returns>
+    public Result<decimal> PayAsResult(int bookingId, decimal amount)
+    {
+        using IDisposable? scope =
+            _log.BeginScope("Booking:{BookingId}", bookingId);
+        _log.LogDebug("Початок оплати, сума {Amount}", amount);
+        Booking? booking = _repository.GetById(bookingId);
+        if (booking is null)
+        {
+            return Result<decimal>.Fail(
+                "booking.exists",
+                $"Бронювання № {bookingId} не знайдено");
+        }
+
+        if (booking.Status != BookingStatus.New)
+        {
+            return Result<decimal>.Fail(
+                "booking.payable",
+                $"Стан {booking.Status} не дозволяє оплату");
+        }
+
+        decimal total = TotalOf(booking);
+        if (amount < total)
+        {
+            return Result<decimal>.Fail(
+                "booking.amount",
+                $"Сплачено {amount:0.00}, треба {total:0.00} грн");
+        }
+
+        if (amount > total)
+        {
+            _log.LogWarning("Переплата {Extra} грн", amount - total);
+        }
+
+        booking.Confirm();
+        _log.LogInformation("Оплачено на {Amount} грн", amount);
+        return Result<decimal>.Ok(total);
+    }
+
     /// <summary>Зберігає короткий звіт про бронювання у файл.</summary>
     /// <param name="path">Шлях до файлу звіту.</param>
     /// <param name="booking">Бронювання.</param>
